@@ -2,7 +2,8 @@
 // Database configuration
 define('DB_HOST', 'localhost');
 define('DB_USERNAME', 'root');
-define('DB_PASSWORD', 'Af@12345678'); // Your MySQL password
+// define('DB_PASSWORD', 'Af@12345678'); // Your MySQL password
+define('DB_PASSWORD', '');
 define('DB_NAME', 'dbassignment');
 
 // Create connection
