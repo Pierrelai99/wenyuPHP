@@ -95,18 +95,36 @@ if ($user && $password === $user['pwd_hash']) {
 function handleRegister() {
     global $pdo;
 
-    $full_name  = trim($_POST['full_name'] ?? '');
+    $first = trim($_POST['first_name'] ?? '');
+    $last  = trim($_POST['last_name'] ?? '');
+    $full_name = $first . ' ' . $last;
+
     $email      = trim($_POST['email'] ?? '');
     $phone      = trim($_POST['phone'] ?? '');
-    $dob        = $_POST['dob'] ?? null;
-    $address    = trim($_POST['address'] ?? '');
+    $dob        = $_POST['date_of_birth'] ?? null;
+    $address_line1 = trim($_POST['address_line1'] ?? '');
+    $address_line2 = trim($_POST['address_line2'] ?? '');
+    $city = trim($_POST['city'] ?? '');
+    $state = trim($_POST['state'] ?? '');
+    $postal = trim($_POST['postal_code'] ?? '');
+    $country = trim($_POST['country'] ?? '');
+
+    $address = $address_line1;
+
+    if (!empty($address_line2)) {
+        $address .= ", " . $address_line2;
+    }
+
+    $address .= ", $city, $state, $postal, $country";
+
     $password   = $_POST['password'] ?? '';
     $confirm_pw = $_POST['confirm_password'] ?? '';
     $updates    = isset($_POST['updates']);
     $promo      = isset($_POST['promotions']);
 
+
     // validation
-    if (empty($full_name) || empty($email) || empty($password) || empty($confirm_pw)) {
+    if (empty($first) || empty($last) || empty($email) || empty($password) || empty($confirm_pw)) {
         $_SESSION['error'] = "Please fill in all required fields.";
         $_SESSION['form_data'] = $_POST;
         header("Location: register.php");
@@ -153,7 +171,8 @@ function handleRegister() {
             $user_code,
             $username,
             $email,
-            password_hash($password, PASSWORD_DEFAULT)
+            $password //password_hash($password, PASSWORD_DEFAULT)
+
         ]);
 
         // insert user profile
@@ -186,7 +205,7 @@ function handleRegister() {
         exit();
 
     } catch (PDOException $e) {
-        $_SESSION['error'] = "Registration error.";
+        $_SESSION['error'] = "Registration error: " . $e->getMessage();
         header("Location: register.php");
         exit();
     }

@@ -2,8 +2,8 @@
 session_start();
 
 // DB connection Af@12345678
-// $pdo = new PDO("mysql:host=localhost;dbname=dbassignment;charset=utf8mb4", "root", "Af@12345678");
-$pdo = new PDO("mysql:host=localhost;dbname=dbassignment;charset=utf8mb4", "root", "");
+$pdo = new PDO("mysql:host=localhost;dbname=dbassignment;charset=utf8mb4", "root", "Af@12345678");
+// $pdo = new PDO("mysql:host=localhost;dbname=dbassignment;charset=utf8mb4", "root", "");
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 // Get featured products

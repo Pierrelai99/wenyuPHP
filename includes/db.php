@@ -2,8 +2,8 @@
 // Database configuration
 define('DB_HOST', 'localhost');
 define('DB_USERNAME', 'root');
-// define('DB_PASSWORD', 'Af@12345678'); // Your MySQL password
-define('DB_PASSWORD', '');
+define('DB_PASSWORD', 'Af@12345678'); // Your MySQL password
+// define('DB_PASSWORD', '');
 define('DB_NAME', 'dbassignment');
 
 // Create connection
@@ -21,17 +21,22 @@ try {
 
 // Function to generate unique user code
 function generateUserCode($pdo) {
+    // Get latest code
     $stmt = $pdo->query("SELECT user_code FROM seafood_users ORDER BY user_code DESC LIMIT 1");
-    $row = $stmt->fetch();
+    $last = $stmt->fetchColumn();
 
-    if ($row) {
-        $num = intval(substr($row['user_code'], 3)) + 1;
+    if ($last) {
+        // Extract number part: USR00000025 → 25
+        $num = intval(substr($last, 3));
+        $num++;
     } else {
         $num = 1;
     }
 
-    return "USR" . str_pad($num, 8, '0', STR_PAD_LEFT);
+    // Format back to USR00000001
+    return "USR" . str_pad($num, 8, "0", STR_PAD_LEFT);
 }
+
 
 // Function to check if email already exists
 function emailExists($pdo, $email) {
