@@ -7,7 +7,7 @@ $pdo = new PDO("mysql:host=localhost;dbname=dbassignment;charset=utf8mb4", "root
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 // Get featured products
-$stmt = $pdo->query("SELECT * FROM products WHERE featured = 1 ");
+$stmt = $pdo->query("SELECT * FROM seafood_products WHERE featured = 1 ");
 $featured_products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Page variables
