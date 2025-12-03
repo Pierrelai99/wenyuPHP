@@ -26,8 +26,8 @@ include 'includes/header.php';
             <div class="container">
                 <div class="hero-layout">
                     <div class="hero-content">
-                        <h1>Welcome to ToyLand Store</h1>
-                        <p>Discover amazing toys and games that spark imagination and create lasting memories</p>
+                        <h1>Welcome to FishyWishy Seafood Store</h1>
+                        <p>Discover the most fresh seafood from ocean to home in hours</p>
                         <div class="hero-buttons">
                             <a href="public/products.php" class="btn btn-primary">Shop Now</a>
                             <a href="public/sale.php" class="btn btn-secondary">View Sale</a>
