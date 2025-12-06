@@ -19,6 +19,7 @@ $root_path = $is_subdirectory ? '../' : '';
     <!-- CSS -->
     <link rel="stylesheet" href="<?php echo $assets_path; ?>/css/style.css">
     <link rel="stylesheet" href="<?php echo $assets_path; ?>/css/login.css">
+    <link rel="stylesheet" href="<?php echo $assets_path; ?>/css/index.css">
     
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
