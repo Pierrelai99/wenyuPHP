@@ -461,52 +461,87 @@ include 'includes/header.php';
 <section class="testimonials-section">
     <div class="container">
         <div class="section-header">
+            <div class="section-badge">
+                <i class="fas fa-comments"></i>
+                <span>Customer Reviews</span>
+            </div>
             <h2>What Our Customers Say</h2>
-            <p>Real reviews from happy families</p>
+            <p>Real reviews from satisfied seafood lovers</p>
         </div>
         
         <div class="testimonials-grid">
             <div class="testimonial-card">
+                <div class="testimonial-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
                 <div class="testimonial-content">
-                    <p>"Amazing selection of educational toys. My kids love learning through play!"</p>
+                    <i class="fas fa-quote-left quote-icon"></i>
+                    <p>"The freshest seafood I've ever had! Delivered within 2 hours and the quality was exceptional. The salmon was restaurant-grade!"</p>
                 </div>
                 <div class="testimonial-author">
-                    <img src="assets/images/customer-1.jpg" alt="Sarah Johnson">
+                    <div class="author-avatar">
+                        <img src="assets/images/customer-1.jpg" alt="Sarah Lim">
+                    </div>
                     <div class="author-info">
-                        <h4>Sarah Johnson</h4>
-                        <span>Verified Customer</span>
+                        <h4>Sarah Lim</h4>
+                        <span><i class="fas fa-check-circle"></i> Verified Customer</span>
                     </div>
                 </div>
             </div>
             
             <div class="testimonial-card">
+                <div class="testimonial-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
                 <div class="testimonial-content">
-                    <p>"Fast shipping and excellent customer service. Highly recommended!"</p>
+                    <i class="fas fa-quote-left quote-icon"></i>
+                    <p>"Amazing service! Cold chain maintained perfectly, and the prawns were still alive when delivered. This is now my go-to seafood supplier!"</p>
                 </div>
                 <div class="testimonial-author">
-                    <img src="assets/images/customer-2.jpg" alt="Mike Davis">
+                    <div class="author-avatar">
+                        <img src="assets/images/customer-2.jpg" alt="Ahmad Rahman">
+                    </div>
                     <div class="author-info">
-                        <h4>Mike Davis</h4>
-                        <span>Verified Customer</span>
+                        <h4>Ahmad Rahman</h4>
+                        <span><i class="fas fa-check-circle"></i> Verified Customer</span>
                     </div>
                 </div>
             </div>
             
             <div class="testimonial-card">
+                <div class="testimonial-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
                 <div class="testimonial-content">
-                    <p>"Quality toys at great prices. Perfect for birthday gifts!"</p>
+                    <i class="fas fa-quote-left quote-icon"></i>
+                    <p>"Premium quality at reasonable prices. The lobsters were huge and fresh. Great for special occasions. Highly recommended!"</p>
                 </div>
                 <div class="testimonial-author">
-                    <img src="assets/images/customer-3.jpg" alt="Lisa Chen">
+                    <div class="author-avatar">
+                        <img src="assets/images/customer-3.jpg" alt="Michelle Tan">
+                    </div>
                     <div class="author-info">
-                        <h4>Lisa Chen</h4>
-                        <span>Verified Customer</span>
+                        <h4>Michelle Tan</h4>
+                        <span><i class="fas fa-check-circle"></i> Verified Customer</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
 
 <!-- Newsletter Section -->
 <section class="newsletter-section">
