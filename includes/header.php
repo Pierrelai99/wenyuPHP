@@ -91,12 +91,12 @@ $root_path = $is_subdirectory ? '../' : '';
                     <li class="dropdown">
                         <a href="<?php echo $root_path; ?>public/products.php">Categories <i class="fas fa-chevron-down"></i></a>
                         <ul class="dropdown-menu">
-                            <li><a href="<?php echo $root_path; ?>public/products.php?category=action-figures">Action Figures</a></li>
-                            <li><a href="<?php echo $root_path; ?>public/products.php?category=board-games">Board Games</a></li>
-                            <li><a href="<?php echo $root_path; ?>public/products.php?category=educational">Educational Toys</a></li>
-                            <li><a href="<?php echo $root_path; ?>public/products.php?category=outdoor">Outdoor Toys</a></li>
-                            <li><a href="<?php echo $root_path; ?>public/products.php?category=arts-crafts">Arts & Crafts</a></li>
-                            <li><a href="<?php echo $root_path; ?>public/products.php?category=babies-toddlers">Babies & Toddlers</a></li>
+                            <li><a href="<?php echo $root_path; ?>public/products.php?category=action-figures">Fish</a></li>
+                            <li><a href="<?php echo $root_path; ?>public/products.php?category=board-games">Crustaceans</a></li>
+                            <li><a href="<?php echo $root_path; ?>public/products.php?category=educational">Shellfish</a></li>
+                            <li><a href="<?php echo $root_path; ?>public/products.php?category=outdoor">Prawns</a></li>
+                            <li><a href="<?php echo $root_path; ?>public/products.php?category=arts-crafts">Crabs</a></li>
+                            <li><a href="<?php echo $root_path; ?>public/products.php?category=babies-toddlers">Lobsters</a></li>
                         </ul>
                     </li>
                     <li><a href="<?php echo $root_path; ?>public/products.php?filter=new">New Arrivals</a></li>
