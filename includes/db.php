@@ -6,12 +6,17 @@ define('DB_PASSWORD', 'Af@12345678'); // Your MySQL password
 // define('DB_PASSWORD', '');
 define('DB_NAME', 'dbassignment');
 
+$host = "localhost";
+$dbname = "dbassignment";
+$username = "root";
+$password = "Af@12345678";
+
 // Create connection
 try {
     $pdo = new PDO(
-        "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4",
-        DB_USERNAME,
-        DB_PASSWORD
+        "mysql:host=$host;dbname=$dbname;charset=utf8mb4",
+        $username,
+        $password
     );
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);

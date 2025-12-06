@@ -1,10 +1,10 @@
 <?php
 session_start();
-
+require_once __DIR__ . "/../includes/db.php";  
 // DB connection Af@12345678
-//$pdo = new PDO("mysql:host=localhost;dbname=dbassignment;charset=utf8mb4", "root", "Af@12345678");
-$pdo = new PDO("mysql:host=localhost;dbname=dbassignment;charset=utf8mb4", "root", "");
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+// $pdo = new PDO("mysql:host=localhost;dbname=dbassignment;charset=utf8mb4", "root", "Af@12345678");
+// // $pdo = new PDO("mysql:host=localhost;dbname=dbassignment;charset=utf8mb4", "root", "");
+// $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 // Get featured products
 $stmt = $pdo->query("SELECT * FROM seafood_products WHERE featured = 1 ");
