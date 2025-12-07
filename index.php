@@ -186,7 +186,7 @@ foreach ($parent_categories as $cat):
     // Fix column names
     $image_path = !empty($cat['category_image']) 
                     ? str_replace("root/", "", $cat['category_image']) 
-                    : "assets/images/products/hero_bg.png"; // default image
+                    : "assets/images/hero_bg.png"; // default image
 
     $cat_name = $cat['category_name'];
     $cat_desc = $cat['description'] ?? '';
