@@ -99,7 +99,6 @@ include '../includes/header.php';
                                     <input type="hidden" name="product_id" value="<?= $product['product_id'] ?>">
                                     <input type="hidden" name="name" value="<?= $product['product_name'] ?>">
                                     <input type="hidden" name="price" value="<?= $product['price_per_kg'] ?>">
-                                    <!-- <input type="hidden" name="sku" value="<?= $product['sku'] ?>"> -->
                                     <input type="hidden" name="image" value="/<?= ltrim($product['product_image'], '/') ?>">
                                     <input type="hidden" name="action" value="add">
                                     <button type="submit" class="add-to-cart">Add to Cart</button>

@@ -17,7 +17,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id = $_POST['product_id'];
         $name = $_POST['name'];
         $price = floatval($_POST['price']);
-        $sku = $_POST['sku'];
         $image = $_POST['image'];
         $qty = 1;
 
@@ -28,7 +27,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'id' => $id,
                 'name' => $name,
                 'price' => $price,
-                'sku' => $sku,
                 'image' => $image,
                 'qty' => $qty
             ];
@@ -114,7 +112,7 @@ include '../includes/header.php';
                                     </div>
                                     <div class="item-details">
                                         <h3><a href="product.php?id=<?= $item['id'] ?>"><?= $item['name'] ?></a></h3>
-                                        <p class="item-sku">SKU: <?= $item['sku'] ?></p>
+                                    
                                     </div>
                                 </div>
 
@@ -189,9 +187,10 @@ include '../includes/header.php';
                     </div>
                 </div>
 
-                <button class="btn btn-primary btn-large">
-                    Proceed to Checkout
-                </button>
+                <a href="checkout.php" class="btn btn-primary btn-large">
+    Proceed to Checkout
+</a>
+
             </div>
 
         </div>
