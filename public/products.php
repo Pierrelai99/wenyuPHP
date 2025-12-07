@@ -8,8 +8,7 @@ require_once '../includes/db.php';
 //     "root",
 //     "Af@12345678"
 // );
-$pdo = new PDO("mysql:host=localhost;dbname=dbassignment;charset=utf8mb4", "root", "");
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+// $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 // Load categories (for sidebar)
 $cat_stmt = $pdo->query("SELECT category_id, category_name FROM seafood_categories WHERE status='active'");

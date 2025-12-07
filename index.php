@@ -1,10 +1,10 @@
 <?php
 session_start();
-
+require_once __DIR__ . "/includes/db.php"; 
 // DB connection Af@12345678
-//$pdo = new PDO("mysql:host=localhost;dbname=dbassignment;charset=utf8mb4", "root", "Af@12345678");
-$pdo = new PDO("mysql:host=localhost;dbname=dbassignment;charset=utf8mb4", "root", "");
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+// $pdo = new PDO("mysql:host=localhost;dbname=dbassignment;charset=utf8mb4", "root", "Af@12345678");
+// // $pdo = new PDO("mysql:host=localhost;dbname=dbassignment;charset=utf8mb4", "root", "");
+// $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 // Get featured products
 $stmt = $pdo->query("SELECT * FROM seafood_products WHERE featured = 1 ");
@@ -21,73 +21,76 @@ include 'includes/header.php';
 
 <!-- Hero Section -->
 <section class="hero-section">
-    <div class="hero-slider">
-        <div class="hero-slide active">
-            <div class="container">
-                <div class="hero-layout">
-                    <div class="hero-content">
-                        <div class="hero-badge">
-                            <i class="fas fa-anchor"></i>
-                            <span>Fresh From The Ocean</span>
-                        </div>
-                        <h1>Welcome to FishyWishy Seafood Store</h1>
-                        <p>Discover the freshest seafood from ocean to home in hours. Premium quality guaranteed with every catch.</p>
-                        <div class="hero-stats">
-                            <div class="stat-item">
-                                <i class="fas fa-fish"></i>
-                                <div>
-                                    <strong>50+</strong>
-                                    <span>Fresh Varieties</span>
-                                </div>
-                            </div>
-                            <div class="stat-item">
-                                <i class="fas fa-shipping-fast"></i>
-                                <div>
-                                    <strong>2 Hours</strong>
-                                    <span>Fast Delivery</span>
-                                </div>
-                            </div>
-                            <div class="stat-item">
-                                <i class="fas fa-certificate"></i>
-                                <div>
-                                    <strong>100%</strong>
-                                    <span>Quality Fresh</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="hero-buttons">
-                            <a href="public/products.php" class="btn btn-primary">
-                                <span>Shop Now</span>
-                                <i class="fas fa-arrow-right"></i>
-                            </a>
-                            <a href="public/sale.php" class="btn btn-secondary">
-                                <i class="fas fa-tags"></i>
-                                <span>View Sale</span>
-                            </a>
+    <div class="hero-background-overlay"></div>
+    <div class="container">
+        <div class="hero-layout">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <i class="fas fa-anchor"></i>
+                    <span>Fresh From The Ocean</span>
+                </div>
+                <h1>Welcome to FishyWishy Seafood Store</h1>
+                <p>Discover the freshest seafood from ocean to home in hours. Premium quality guaranteed with every catch.</p>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <i class="fas fa-fish"></i>
+                        <div>
+                            <strong>50+</strong>
+                            <span>Fresh Varieties</span>
                         </div>
                     </div>
-                    <div class="hero-image">
-                        <div class="hero-seafood-collection">
-                            <img src="assets/images/hero_bg.png" alt="Fresh Seafood Collection" class="floating-seafood">
+                    <div class="stat-item">
+                        <i class="fas fa-shipping-fast"></i>
+                        <div>
+                            <strong>2 Hours</strong>
+                            <span>Fast Delivery</span>
                         </div>
-                        <div class="hero-decorations">
-                            <div class="decoration-wave wave-1"></div>
-                            <div class="decoration-wave wave-2"></div>
-                            <div class="decoration-wave wave-3"></div>
-                            <div class="decoration-bubble bubble-1">🫧</div>
-                            <div class="decoration-bubble bubble-2">🫧</div>
-                            <div class="decoration-bubble bubble-3">🫧</div>
-                            <div class="decoration-fish fish-1">🐟</div>
-                            <div class="decoration-fish fish-2">🦐</div>
-                            <div class="decoration-fish fish-3">🦀</div>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-certificate"></i>
+                        <div>
+                            <strong>100%</strong>
+                            <span>Quality Fresh</span>
                         </div>
                     </div>
                 </div>
+                <div class="hero-buttons">
+                    <a href="public/products.php" class="btn btn-primary">
+                        <span>Shop Now</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="public/sale.php" class="btn btn-secondary">
+                        <i class="fas fa-tags"></i>
+                        <span>View Sale</span>
+                    </a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="visual-center">
+                    <div class="seafood-icon main-fish">🐟</div>
+                    <div class="seafood-icon shrimp">🦐</div>
+                    <div class="seafood-icon crab">🦀</div>
+                    <div class="seafood-icon lobster">🦞</div>
+                    <div class="seafood-icon squid">🦑</div>
+                    <div class="seafood-icon octopus">🐙</div>
+                </div>
+                <div class="floating-bubbles">
+                    <div class="bubble"></div>
+                    <div class="bubble"></div>
+                    <div class="bubble"></div>
+                    <div class="bubble"></div>
+                    <div class="bubble"></div>
+                    <div class="bubble"></div>
+                </div>
+                <div class="wave-decoration wave-1"></div>
+                <div class="wave-decoration wave-2"></div>
+                <div class="wave-decoration wave-3"></div>
             </div>
         </div>
     </div>
 </section>
 
+<!-- Features Section -->
 <section class="features-section">
     <div class="container">
         <div class="features-grid">
@@ -131,9 +134,8 @@ include 'includes/header.php';
     </div>
 </section>
 
-
-<!-- Featured Banner - Seafood -->
-<section class="banner-section">
+<!-- Single Featured Banner -->
+<section class="banner-section single-banner">
     <div class="container">
         <div class="banner-container floating">
             <div class="banner-image">
@@ -148,7 +150,6 @@ include 'includes/header.php';
                 </div>
                 <h3>Ocean Fresh Seafood Delivered</h3>
                 <p>Premium quality seafood from trusted fishermen, delivered straight to your doorstep</p>
-                <!-- TODO: Change link to redirect to Seafood category when categories are set up -->
                 <a href="public/products.php" class="banner-btn">
                     <span>Browse Fresh Catch</span>
                     <i class="fas fa-arrow-right"></i>
@@ -171,43 +172,57 @@ include 'includes/header.php';
         </div>
         
         <div class="categories-grid">
-            <?php
-            // Fetch parent categories from DB
-            $stmt = $pdo->query("SELECT * FROM seafood_categories WHERE parent_id IS NULL AND status = 'active'");
-            $parent_categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+           <?php
+$stmt = $pdo->query("
+    SELECT * 
+    FROM seafood_categories 
+    WHERE parent_id IS NULL 
+      AND status = 'active'
+");
+$parent_categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            foreach ($parent_categories as $cat): 
-                // Remove "root/" if needed
-                $image_path = str_replace("root/", "", $cat['image']);
-            ?>
-                <div class="category-card">
-                    <div class="category-image">
-                        <?php if (!empty($cat['image'])): ?>
-                            <img src="<?= htmlspecialchars($image_path) ?>" alt="<?= htmlspecialchars($cat['name']) ?>">
-                        <?php endif; ?>
-                        <div class="category-overlay"></div>
-                        <div class="category-badge">
-                            <i class="fas fa-check-circle"></i>
-                            <span>Fresh</span>
-                        </div>
-                    </div>
-                    <div class="category-content">
-                        <h3><?= htmlspecialchars($cat['name']) ?></h3>
-                        <p><?= htmlspecialchars($cat['description']) ?></p>
-                        <a href="public/subcategories.php?parent_id=<?= urlencode($cat['category_id']) ?>" class="btn btn-outline">
-                            <span>Shop Now</span>
-                            <i class="fas fa-arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
-            <?php endforeach; ?>
+foreach ($parent_categories as $cat):
+
+    // Fix column names
+    $image_path = !empty($cat['category_image']) 
+                    ? str_replace("root/", "", $cat['category_image']) 
+                    : "assets/images/products/hero_bg.png"; // default image
+
+    $cat_name = $cat['category_name'];
+    $cat_desc = $cat['description'] ?? '';
+?>
+    <div class="category-card">
+        <div class="category-image">
+
+            <img src="<?= htmlspecialchars($image_path) ?>" 
+                 alt="<?= htmlspecialchars($cat_name) ?>">
+
+            <div class="category-overlay"></div>
+            <div class="category-badge">
+                <i class="fas fa-check-circle"></i>
+                <span>Fresh</span>
+            </div>
+        </div>
+
+        <div class="category-content">
+            <h3><?= htmlspecialchars($cat_name) ?></h3>
+            <p><?= htmlspecialchars($cat_desc) ?></p>
+
+            <a href="public/subcategories.php?parent_id=<?= urlencode($cat['category_id']) ?>" 
+               class="btn btn-outline">
+                <span>Shop Now</span>
+                <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+
+<?php endforeach; ?>
         </div>
     </div>
 </section>
 
-
 <!-- Featured Banners Grid -->
-<section class="banner-section">
+<section class="banner-section multi-banners">
     <div class="container">
         <div class="featured-banners">
             <!-- Large Premium Seafood Banner -->
@@ -225,7 +240,6 @@ include 'includes/header.php';
                         </div>
                         <h3>Discover Our Premium Seafood</h3>
                         <p>Wild-caught, sustainably sourced, and delivered fresh to your table</p>
-                        <!-- TODO: Change link to redirect to Premium Seafood category when categories are set up -->
                         <a href="public/products.php" class="banner-btn">
                             <span>Shop Premium Selection</span>
                             <i class="fas fa-arrow-right"></i>
@@ -247,7 +261,6 @@ include 'includes/header.php';
                         </div>
                         <h3>Fresh Fish Daily</h3>
                         <p>Caught this morning, on your plate tonight</p>
-                        <!-- TODO: Change link to redirect to Fish category when categories are set up -->
                         <a href="public/products.php" class="banner-btn">
                             <span>Browse Fish</span>
                             <i class="fas fa-arrow-right"></i>
@@ -269,7 +282,6 @@ include 'includes/header.php';
                         </div>
                         <h3>Premium Shellfish</h3>
                         <p>Lobsters, crabs, prawns & more delicacies</p>
-                        <!-- TODO: Change link to redirect to Shellfish category when categories are set up -->
                         <a href="public/products.php" class="banner-btn">
                             <span>Explore Now</span>
                             <i class="fas fa-arrow-right"></i>
@@ -280,7 +292,6 @@ include 'includes/header.php';
         </div>
     </div>
 </section>
-
 
 <!-- Featured Products Section -->
 <section class="featured-products-section">
@@ -358,7 +369,7 @@ include 'includes/header.php';
 </section>
 
 <!-- Fresh Catch Speed Banner -->
-<section class="banner-section">
+<section class="banner-section speed-banner">
     <div class="container">
         <div class="banner-container banner-reverse floating">
             <div class="banner-image-left">
@@ -390,7 +401,6 @@ include 'includes/header.php';
                         <span>Quality Assured</span>
                     </div>
                 </div>
-                <!-- TODO: Change link to redirect to Fresh Catch category when categories are set up -->
                 <a href="public/products.php" class="banner-btn">
                     <span>Order Fresh Now</span>
                     <i class="fas fa-arrow-right"></i>
@@ -412,7 +422,7 @@ include 'includes/header.php';
                     </div>
                     <h2>Fresh Daily Catches</h2>
                     <p>Explore today's fresh arrivals straight from the ocean to your table</p>
-                    <a href="new-arrivals.php" class="btn btn-white">
+                    <a href="public/products.php?filter=new" class="btn btn-white">
                         <span>Browse Fresh</span>
                         <i class="fas fa-arrow-right"></i>
                     </a>
@@ -435,7 +445,7 @@ include 'includes/header.php';
                     </div>
                     <h2>Weekly Specials</h2>
                     <p>Save up to 40% on premium seafood selections this week only</p>
-                    <a href="sale.php" class="btn btn-white">
+                    <a href="public/sale.php" class="btn btn-white">
                         <span>View Deals</span>
                         <i class="fas fa-arrow-right"></i>
                     </a>
@@ -541,7 +551,6 @@ include 'includes/header.php';
         </div>
     </div>
 </section>
-
 
 <!-- Newsletter Section -->
 <section class="newsletter-section">
