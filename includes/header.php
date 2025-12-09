@@ -20,6 +20,7 @@ $root_path = $is_subdirectory ? '../' : '';
     <link rel="stylesheet" href="<?php echo $assets_path; ?>/css/style.css">
     <link rel="stylesheet" href="<?php echo $assets_path; ?>/css/login.css">
     <link rel="stylesheet" href="<?php echo $assets_path; ?>/css/index.css">
+    <link rel="stylesheet" href="<?php echo $assets_path; ?>/css/aboutUsContactUs.css">
     
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -47,20 +48,23 @@ $root_path = $is_subdirectory ? '../' : '';
         </div>
     </div>
 
-    <!-- Header -->
+ <!-- Header -->
     <header class="main-header">
         <div class="container">
             <div class="header-top">
                 <div class="logo">
                     <a href="<?php echo $root_path; ?>index.php">
-                        <h1>Toy Land</h1>
-                        <span>Where Fun Comes to Life!</span>
+                        <i class="fas fa-fish"></i>
+                        <div class="logo-text">
+                            <h1>FishyWishy</h1>
+                            <span>Fresh Seafood Delivered Daily!</span>
+                        </div>
                     </a>
                 </div>
                 
                 <div class="search-bar">
                     <form action="search.php" method="GET">
-                        <input type="text" name="q" placeholder="Search for toys, games, and more..." value="<?php echo isset($_GET['q']) ? htmlspecialchars($_GET['q']) : ''; ?>">
+                        <input type="text" name="q" placeholder="Search for fresh fish, prawns, crabs, and more..." value="<?php echo isset($_GET['q']) ? htmlspecialchars($_GET['q']) : ''; ?>">
                         <button type="submit"><i class="fas fa-search"></i></button>
                     </form>
                 </div>
@@ -68,11 +72,23 @@ $root_path = $is_subdirectory ? '../' : '';
                 <div class="header-actions">
                     <div class="user-account">
                         <?php if (isset($_SESSION['user_id'])): ?>
-                            <a href="<?php echo $root_path; ?>member/dashboard.php"><i class="fas fa-user"></i> My Account</a>
-                            <a href="<?php echo $root_path; ?>public/logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                            <a href="<?php echo $root_path; ?>member/dashboard.php">
+                                <i class="fas fa-user"></i> 
+                                <span>My Account</span>
+                            </a>
+                            <a href="<?php echo $root_path; ?>public/logout.php">
+                                <i class="fas fa-sign-out-alt"></i> 
+                                <span>Logout</span>
+                            </a>
                         <?php else: ?>
-                            <a href="<?php echo $root_path; ?>public/login.php"><i class="fas fa-sign-in-alt"></i> Login</a>
-                            <a href="<?php echo $root_path; ?>public/register.php"><i class="fas fa-user-plus"></i> Register</a>
+                            <a href="<?php echo $root_path; ?>public/login.php">
+                                <i class="fas fa-sign-in-alt"></i> 
+                                <span>Login</span>
+                            </a>
+                            <a href="<?php echo $root_path; ?>public/register.php">
+                                <i class="fas fa-user-plus"></i> 
+                                <span>Register</span>
+                            </a>
                         <?php endif; ?>
                     </div>
                     
@@ -88,28 +104,30 @@ $root_path = $is_subdirectory ? '../' : '';
             <!-- Navigation -->
             <nav class="main-nav">
                 <ul class="nav-menu">
-                    <li><a href="<?php echo $root_path; ?>index.php">Home</a></li>
+                    <li><a href="<?php echo $root_path; ?>index.php"><i class="fas fa-home"></i> Home</a></li>
                     <li class="dropdown">
-                        <a href="<?php echo $root_path; ?>public/products.php">Categories <i class="fas fa-chevron-down"></i></a>
+                        <a href="<?php echo $root_path; ?>public/products.php">
+                            <i class="fas fa-list"></i> Categories 
+                            <i class="fas fa-chevron-down"></i>
+                        </a>
                         <ul class="dropdown-menu">
-                            <li><a href="<?php echo $root_path; ?>public/products.php?category=action-figures">Fish</a></li>
-                            <li><a href="<?php echo $root_path; ?>public/products.php?category=board-games">Crustaceans</a></li>
-                            <li><a href="<?php echo $root_path; ?>public/products.php?category=educational">Shellfish</a></li>
-                            <li><a href="<?php echo $root_path; ?>public/products.php?category=outdoor">Prawns</a></li>
-                            <li><a href="<?php echo $root_path; ?>public/products.php?category=arts-crafts">Crabs</a></li>
-                            <li><a href="<?php echo $root_path; ?>public/products.php?category=babies-toddlers">Lobsters</a></li>
+                            <li><a href="<?php echo $root_path; ?>public/products.php?category=fish"><i class="fas fa-fish"></i> Fresh Fish</a></li>
+                            <li><a href="<?php echo $root_path; ?>public/products.php?category=crustaceans"><i class="fas fa-shrimp"></i> Crustaceans</a></li>
+                            <li><a href="<?php echo $root_path; ?>public/products.php?category=shellfish"><i class="fas fa-star"></i> Shellfish</a></li>
+                            <li><a href="<?php echo $root_path; ?>public/products.php?category=prawns"><i class="fas fa-shrimp"></i> Prawns & Shrimp</a></li>
+                            <li><a href="<?php echo $root_path; ?>public/products.php?category=crabs"><i class="fas fa-crab"></i> Crabs</a></li>
+                            <li><a href="<?php echo $root_path; ?>public/products.php?category=lobsters"><i class="fas fa-fish"></i> Lobsters</a></li>
                         </ul>
                     </li>
-                    <li><a href="<?php echo $root_path; ?>public/products.php?filter=new">New Arrivals</a></li>
-                    <li><a href="<?php echo $root_path; ?>public/sale.php">Sale</a></li>
-                    <li><a href="<?php echo $root_path; ?>public/products.php?filter=brands">Brands</a></li>
-                    <li><a href="<?php echo $root_path; ?>public/about.php">About Us</a></li>
-                    <li><a href="<?php echo $root_path; ?>public/contact.php">Contact</a></li>
+                    <li><a href="<?php echo $root_path; ?>public/products.php?filter=new"><i class="fas fa-sparkles"></i> Fresh Arrivals</a></li>
+                    <li><a href="<?php echo $root_path; ?>public/sale.php"><i class="fas fa-tags"></i> Special Deals</a></li>
+                    <li><a href="<?php echo $root_path; ?>public/products.php?filter=premium"><i class="fas fa-crown"></i> Premium Selection</a></li>
+                    <li><a href="<?php echo $root_path; ?>public/about.php"><i class="fas fa-info-circle"></i> About Us</a></li>
+                    <li><a href="<?php echo $root_path; ?>public/contact.php"><i class="fas fa-phone"></i> Contact</a></li>
                 </ul>
             </nav>
         </div>
     </header>
-
     <!-- Breadcrumb -->
     <?php if (isset($show_breadcrumb) && $show_breadcrumb): ?>
     <div class="breadcrumb">

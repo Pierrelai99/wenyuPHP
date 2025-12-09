@@ -3,14 +3,14 @@ session_start();
 
 // Page variables
 $page_title = "Contact Us";
-$page_description = "Get in touch with ToyLand Store - we're here to help with all your toy shopping needs";
+$page_description = "Get in touch with FishyWishy Seafood Store - we're here to help with all your seafood shopping needs";
 $show_breadcrumb = true;
 $breadcrumb_items = [
     ['url' => 'contact.php', 'title' => 'Contact Us']
 ];
 
 // Include header
-include 'includes/header.php';
+include '../includes/header.php';
 ?>
 
 <!-- Contact Hero Section -->
@@ -18,7 +18,7 @@ include 'includes/header.php';
     <div class="container">
         <div class="contact-hero-content">
             <h1>Contact Us</h1>
-            <p>We're here to help with all your toy shopping needs across Malaysia</p>
+            <p>We're here to help with all your seafood shopping needs across Malaysia</p>
         </div>
     </div>
 </section>
@@ -64,10 +64,10 @@ include 'includes/header.php';
                         <select id="subject" name="subject" required>
                             <option value="">Select a subject</option>
                             <option value="general">General Inquiry</option>
-                            <option value="product">Product Information</option>
+                            <option value="product">Seafood Information</option>
                             <option value="order">Order Status</option>
                             <option value="returns">Returns & Exchanges</option>
-                            <option value="shipping">Shipping Information</option>
+                            <option value="shipping">Delivery Information</option>
                             <option value="technical">Technical Support</option>
                             <option value="feedback">Feedback</option>
                             <option value="partnership">Partnership Opportunities</option>
@@ -88,7 +88,7 @@ include 'includes/header.php';
                         <label class="checkbox-label">
                             <input type="checkbox" name="newsletter" id="newsletter">
                             <span class="checkmark"></span>
-                            Subscribe to our newsletter for updates and special offers
+                            Subscribe to our newsletter for fresh catch updates and special offers
                         </label>
                     </div>
                     
@@ -112,9 +112,9 @@ include 'includes/header.php';
                         </div>
                         <div class="method-content">
                             <h3>Phone Support</h3>
-                            <p><strong>Main:</strong> +60 3-2123 4567</p>
-                            <p><strong>Toll Free:</strong> 1-300-TOYLAND</p>
-                            <p><strong>Hours:</strong> Mon-Fri 9AM-6PM MYT</p>
+                            <p><strong>Main:</strong> +60 3-3168 7890</p>
+                            <p><strong>Toll Free:</strong> 1-300-FISHYWISHY</p>
+                            <p><strong>Hours:</strong> Mon-Fri 8AM-6PM MYT</p>
                         </div>
                     </div>
                     
@@ -124,8 +124,8 @@ include 'includes/header.php';
                         </div>
                         <div class="method-content">
                             <h3>Email Support</h3>
-                            <p><strong>General:</strong> info@toylandstore.com.my</p>
-                            <p><strong>Support:</strong> support@toylandstore.com.my</p>
+                            <p><strong>General:</strong> info@fishywishy.com.my</p>
+                            <p><strong>Support:</strong> support@fishywishy.com.my</p>
                             <p><strong>Response:</strong> Within 24 hours</p>
                         </div>
                     </div>
@@ -147,11 +147,11 @@ include 'includes/header.php';
                             <i class="fas fa-map-marker-alt"></i>
                         </div>
                         <div class="method-content">
-                            <h3>Visit Our Store</h3>
-                            <p>Level 3, Pavilion Kuala Lumpur<br>
-                            168, Jalan Bukit Bintang<br>
-                            55100 Kuala Lumpur, Malaysia</p>
-                            <p><strong>Hours:</strong> Daily 10AM-10PM</p>
+                            <h3>Visit Our Location</h3>
+                            <p>Warehouse & Processing Center<br>
+                            Lot 45, Jalan Pelabuhan Utara<br>
+                            Pelabuhan Klang, 42000 Selangor, Malaysia</p>
+                            <p><strong>Hours:</strong> Mon-Sat 8AM-5PM</p>
                         </div>
                     </div>
                 </div>
@@ -194,41 +194,41 @@ include 'includes/header.php';
         <div class="faq-grid">
             <div class="faq-item">
                 <div class="faq-question">
-                    <h3>What are your shipping options?</h3>
+                    <h3>What are your delivery options?</h3>
                     <i class="fas fa-chevron-down"></i>
                 </div>
                 <div class="faq-answer">
-                    <p>We offer several shipping options across Malaysia: Standard (2-3 business days), Express (1-2 business days), and Same Day Delivery (Klang Valley only). Free shipping is available on orders over RM150.</p>
+                    <p>We offer several cold chain delivery options across Malaysia: Standard (2-3 business days), Express (1-2 business days), and Same Day Delivery (Klang Valley only). Free delivery is available on orders over RM200.</p>
                 </div>
             </div>
             
             <div class="faq-item">
                 <div class="faq-question">
-                    <h3>How do I return an item?</h3>
+                    <h3>How do I return seafood?</h3>
                     <i class="fas fa-chevron-down"></i>
                 </div>
                 <div class="faq-answer">
-                    <p>You can return items within 30 days of delivery. Simply log into your account, go to your order history, and initiate a return. We'll provide a prepaid shipping label.</p>
+                    <p>If you're not satisfied with your seafood upon delivery, contact us immediately within 24 hours. We'll arrange a return and full refund. Your satisfaction and food safety are our priorities.</p>
                 </div>
             </div>
             
             <div class="faq-item">
                 <div class="faq-question">
-                    <h3>Are your toys safe for children?</h3>
+                    <h3>Is your seafood fresh and safe?</h3>
                     <i class="fas fa-chevron-down"></i>
                 </div>
                 <div class="faq-answer">
-                    <p>Absolutely! All our toys meet or exceed international safety standards. We carefully vet every product and only carry items from reputable manufacturers.</p>
+                    <p>Absolutely! All our seafood meets or exceeds international food safety standards. We carefully inspect every catch and maintain strict cold chain protocols from ocean to your door.</p>
                 </div>
             </div>
             
             <div class="faq-item">
                 <div class="faq-question">
-                    <h3>Do you ship internationally?</h3>
+                    <h3>Do you deliver internationally?</h3>
                     <i class="fas fa-chevron-down"></i>
                 </div>
                 <div class="faq-answer">
-                    <p>Currently, we ship throughout Malaysia and to Singapore, Brunei, and Thailand. We're expanding our international shipping to more Southeast Asian countries soon. Shipping rates and delivery times vary by location.</p>
+                    <p>Currently, we deliver throughout Malaysia and to Singapore and Brunei. We're expanding our cold chain delivery to more Southeast Asian countries soon. Delivery rates and times vary by location.</p>
                 </div>
             </div>
             
@@ -238,17 +238,17 @@ include 'includes/header.php';
                     <i class="fas fa-chevron-down"></i>
                 </div>
                 <div class="faq-answer">
-                    <p>Once your order ships, you'll receive a tracking number via email. You can also track your order by logging into your account and viewing your order history.</p>
+                    <p>Once your order is dispatched, you'll receive a tracking number via email and SMS. You can also track your order by logging into your account and viewing your order history.</p>
                 </div>
             </div>
             
             <div class="faq-item">
                 <div class="faq-question">
-                    <h3>Do you offer gift wrapping?</h3>
+                    <h3>Do you offer bulk orders for restaurants?</h3>
                     <i class="fas fa-chevron-down"></i>
                 </div>
                 <div class="faq-answer">
-                    <p>Yes! We offer beautiful gift wrapping for an additional RM12 per item. You can select this option during checkout. Perfect for birthdays, festivals, and special occasions!</p>
+                    <p>Yes! We offer special pricing and delivery options for restaurants, hotels, and catering businesses. Contact our B2B team for customized solutions. Perfect for your restaurant needs!</p>
                 </div>
             </div>
         </div>
@@ -263,35 +263,35 @@ include 'includes/header.php';
 <section class="map-section">
     <div class="container">
         <div class="map-content">
-            <h2>Visit Our Store</h2>
-            <p>Come see our amazing selection in person!</p>
+            <h2>Visit Our Location</h2>
+            <p>Come see our processing facility and fresh seafood selection!</p>
             
             <div class="map-container">
                 <!-- Placeholder for Google Maps integration -->
                 <div class="map-placeholder">
                     <i class="fas fa-map"></i>
                     <p>Interactive Map Coming Soon</p>
-                    <p>Level 3, Pavilion Kuala Lumpur, 168 Jalan Bukit Bintang, 55100 KL</p>
+                    <p>Lot 45, Jalan Pelabuhan Utara, Pelabuhan Klang, 42000 Selangor</p>
                 </div>
             </div>
             
             <div class="store-info">
                 <div class="info-item">
-                    <h4>Store Hours</h4>
+                    <h4>Operating Hours</h4>
                     <ul>
-                        <li>Monday - Sunday: 10:00 AM - 10:00 PM</li>
-                        <li>Public Holidays: 10:00 AM - 8:00 PM</li>
+                        <li>Monday - Saturday: 8:00 AM - 5:00 PM</li>
+                        <li>Sunday & Public Holidays: Closed</li>
                     </ul>
                 </div>
                 
                 <div class="info-item">
                     <h4>Parking</h4>
-                    <p>Ample parking available at Pavilion KL</p>
+                    <p>Ample parking available at our warehouse facility</p>
                 </div>
                 
                 <div class="info-item">
                     <h4>Accessibility</h4>
-                    <p>Our store is fully accessible with lifts and wide aisles</p>
+                    <p>Our facility is easily accessible with loading bay for bulk orders</p>
                 </div>
             </div>
         </div>
@@ -306,28 +306,27 @@ include 'includes/header.php';
             <div class="hours-grid">
                 <div class="hours-item">
                     <h3>Phone Support</h3>
-                    <p><strong>Monday - Friday:</strong> 9:00 AM - 6:00 PM MYT</p>
-                    <p><strong>Saturday:</strong> 10:00 AM - 4:00 PM MYT</p>
+                    <p><strong>Monday - Friday:</strong> 8:00 AM - 6:00 PM MYT</p>
+                    <p><strong>Saturday:</strong> 8:00 AM - 2:00 PM MYT</p>
                     <p><strong>Sunday:</strong> Closed</p>
                 </div>
                 
                 <div class="hours-item">
                     <h3>Email Support</h3>
                     <p><strong>Response Time:</strong> Within 24 hours</p>
-                    <p><strong>Best Time:</strong> 9:00 AM - 5:00 PM MYT</p>
+                    <p><strong>Best Time:</strong> 8:00 AM - 5:00 PM MYT</p>
                 </div>
                 
                 <div class="hours-item">
                     <h3>Live Chat</h3>
-                    <p><strong>Monday - Friday:</strong> 9:00 AM - 6:00 PM MYT</p>
-                    <p><strong>Saturday:</strong> 10:00 AM - 4:00 PM MYT</p>
+                    <p><strong>Monday - Friday:</strong> 8:00 AM - 6:00 PM MYT</p>
+                    <p><strong>Saturday:</strong> 8:00 AM - 2:00 PM MYT</p>
                 </div>
             </div>
         </div>
     </div>
 </section>
-
 <?php
 // Include footer
-include 'includes/footer.php';
+include '../includes/footer.php';
 ?> 

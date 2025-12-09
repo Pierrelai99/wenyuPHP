@@ -1,10 +1,10 @@
-    <!-- Footer -->
+   <!-- Footer -->
     <footer class="main-footer">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h3>About ToyLand Store</h3>
-                    <p>We're passionate about bringing joy and imagination to children of all ages. Our carefully curated selection of toys and games ensures quality, safety, and endless fun for your little ones.</p>
+                    <h3>About FishyWishy Seafood Store</h3>
+                    <p>We're passionate about bringing the freshest catch from ocean to table. Our carefully sourced selection of premium seafood ensures quality, freshness, and delicious flavors for seafood lovers everywhere.</p>
                     <div class="social-links">
                         <a href="#"><i class="fab fa-facebook"></i></a>
                         <a href="#"><i class="fab fa-twitter"></i></a>
@@ -29,7 +29,7 @@
                     <h3>Customer Service</h3>
                     <ul>
                         <li><a href="faq.php">FAQ</a></li>
-                        <li><a href="size-guide.php">Size Guide</a></li>
+                        <li><a href="size-guide.php">Preparation Guide</a></li>
                         <li><a href="gift-cards.php">Gift Cards</a></li>
                         <li><a href="wishlist.php">Wishlist</a></li>
                         <li><a href="track-order.php">Track Order</a></li>
@@ -39,7 +39,7 @@
                 
                 <div class="footer-section">
                     <h3>Newsletter</h3>
-                    <p>Subscribe to get special offers, free giveaways, and once-in-a-lifetime deals.</p>
+                    <p>Subscribe to get special offers, fresh catch updates, and exclusive seafood deals delivered to your inbox.</p>
                     <form class="newsletter-form" action="newsletter.php" method="POST">
                         <input type="email" name="email" placeholder="Enter your email" required>
                         <button type="submit">Subscribe</button>
@@ -49,7 +49,7 @@
             
             <div class="footer-bottom">
                 <div class="footer-bottom-left">
-                    <p>&copy; <?php echo date('Y'); ?> ToyLand Store. All rights reserved.</p>
+                    <p>&copy; <?php echo date('Y'); ?> FishyWishy Seafood Store. All rights reserved.</p>
                 </div>
                 <div class="footer-bottom-right">
                     <div class="payment-methods">
