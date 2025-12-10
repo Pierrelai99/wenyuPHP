@@ -3,17 +3,17 @@ session_start();
 require_once '../includes/db.php';
 
 $parent_id = isset($_GET['parent_id']) ? $_GET['parent_id'] : null;
-$parent_category = null;
+$seafood_category = null;
 $subcategories = [];
 
 if ($parent_id) {
     // Get parent category
-    $stmt = $pdo->prepare("SELECT * FROM categories WHERE category_id = ?");
+    $stmt = $pdo->prepare("SELECT * FROM seafood_categories WHERE category_id = ?");
     $stmt->execute([$parent_id]);
     $parent_category = $stmt->fetch();
 
     // Get subcategories
-    $stmt = $pdo->prepare("SELECT * FROM categories WHERE parent_id = ? AND status = 'active'");
+    $stmt = $pdo->prepare("SELECT * FROM seafood_categories WHERE parent_id = ? AND status = 'active'");
     $stmt->execute([$parent_id]);
     $subcategories = $stmt->fetchAll();
 }
@@ -23,7 +23,7 @@ include '../includes/header.php';
 
 <section class="subcategories-section">
     <div class="container">
-        <?php if ($parent_category): ?>
+        <?php if ($parent_id): ?>
             <h2>Subcategories of <?= htmlspecialchars($parent_category['name']) ?></h2>
             <div class="subcategories-grid">
                 <?php foreach ($subcategories as $sub): ?>

@@ -94,7 +94,6 @@ include '../includes/header.php';
                     <i class="fas fa-shield-alt"></i>
                 </div>
                 <h3>Freshness Guaranteed</h3>
-                <p>All our seafood meets or exceeds international quality standards. We carefully inspect every catch before adding it to our collection.</p>
             </div>
             
             <div class="feature-item">
@@ -102,7 +101,6 @@ include '../includes/header.php';
                     <i class="fas fa-graduation-cap"></i>
                 </div>
                 <h3>Sustainable Sourcing</h3>
-                <p>We prioritize seafood from sustainable fisheries and responsible aquaculture. Every product is selected with environmental responsibility in mind.</p>
             </div>
             
             <div class="feature-item">
@@ -110,7 +108,6 @@ include '../includes/header.php';
                     <i class="fas fa-shipping-fast"></i>
                 </div>
                 <h3>Fast & Cold Chain Delivery</h3>
-                <p>Quick delivery across Malaysia with temperature-controlled packaging to ensure your seafood arrives fresh and safe. Same-day delivery available in Klang Valley.</p>
             </div>
             
             <div class="feature-item">
@@ -118,7 +115,6 @@ include '../includes/header.php';
                     <i class="fas fa-headset"></i>
                 </div>
                 <h3>Expert Support</h3>
-                <p>Our seafood experts are here to help you select the perfect catch and provide cooking tips for your culinary needs.</p>
             </div>
             
             <div class="feature-item">
@@ -126,7 +122,6 @@ include '../includes/header.php';
                     <i class="fas fa-undo"></i>
                 </div>
                 <h3>Easy Returns</h3>
-                <p>Not satisfied? We offer hassle-free returns and exchanges to ensure you're completely happy with your seafood purchase.</p>
             </div>
             
             <div class="feature-item">
@@ -134,7 +129,6 @@ include '../includes/header.php';
                     <i class="fas fa-percentage"></i>
                 </div>
                 <h3>Best Prices</h3>
-                <p>We work directly with fishermen and suppliers to offer competitive prices without compromising on quality.</p>
             </div>
         </div>
     </div>

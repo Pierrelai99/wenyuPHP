@@ -11,7 +11,7 @@ if (!isset($_SESSION['user_code']) || $_SESSION['role'] !== 'admin') {
 
 // Page variables
 $page_title = "Admin Dashboard";
-$page_description = "ToyLand Store administration dashboard";
+$page_description = "Fishy Wishy Seafood Store administration dashboard";
 $show_breadcrumb = true;
 $breadcrumb_items = [
     ['url' => 'dashboard.php', 'title' => 'Admin Dashboard']
@@ -25,8 +25,8 @@ include '../includes/header.php';
 <section class="dashboard-section admin-dashboard">
     <div class="container">
         <div class="dashboard-header">
-            <h1>Admin Dashboard</h1>
-            <p>Welcome back, <?php echo htmlspecialchars($_SESSION['username']); ?>! Manage your store</p>
+            <h1>Fishy Wishy Dashboard</h1>
+            <p>Welcome back, <?php echo htmlspecialchars($_SESSION['username']); ?>! Manage your seafood store</p>
         </div>
         
         <?php if (isset($_SESSION['success'])): ?>
@@ -39,11 +39,11 @@ include '../includes/header.php';
         <div class="dashboard-grid">
             <div class="dashboard-card">
                 <div class="card-icon">
-                    <i class="fas fa-box"></i>
+                    <i class="fas fa-fish"></i>
                 </div>
                 <div class="card-content">
-                    <h3>Products</h3>
-                    <p>Manage store products and inventory</p>
+                    <h3>Seafood Products</h3>
+                    <p>Manage seafood items and fresh stock</p>
                     <a href="products.php" class="btn btn-primary">Manage Products</a>
                 </div>
             </div>
@@ -64,9 +64,9 @@ include '../includes/header.php';
                     <i class="fas fa-users"></i>
                 </div>
                 <div class="card-content">
-                    <h3>Members</h3>
+                    <h3>Customers</h3>
                     <p>Manage customer accounts</p>
-                    <a href="members.php" class="btn btn-primary">View Members</a>
+                    <a href="members.php" class="btn btn-primary">View Customers</a>
                 </div>
             </div>
             
@@ -76,7 +76,7 @@ include '../includes/header.php';
                 </div>
                 <div class="card-content">
                     <h3>Categories</h3>
-                    <p>Manage product categories</p>
+                    <p>Manage seafood categories</p>
                     <a href="categories.php" class="btn btn-primary">Manage Categories</a>
                 </div>
             </div>

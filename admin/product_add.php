@@ -96,26 +96,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $pdo->beginTransaction();
 
         // Insert product (store main image path to products.image for list/thumbnail usage)
-        $stmt = $pdo->prepare("
+       $stmt = $pdo->prepare("
     INSERT INTO products
-        (product_id, sku, name, description, price, sale_price, stock_quantity, status, product_features, product_specifications, category_id, image)
+        (product_id, sku, name, description, price, sale_price, stock_quantity, status, 
+        weight, origin, freshness_level, category_id, image)
     VALUES
-        (:product_id, :sku, :name, :description, :price, :sale_price, :stock_quantity, :status, :product_features, :product_specifications, :category_id, :image)
-    ");
-    $stmt->execute([
-    ':product_id'             => $product_id,
-    ':sku'                    => $sku,
-    ':name'                   => $name,
-    ':description'            => $description,
-    ':price'                  => $price,
-    ':sale_price'             => $sale_price,
-    ':stock_quantity'         => (int)($_POST['stock_quantity'] ?? 0),
-    ':status'                 => $status,
-    ':product_features'       => $product_features,
-    ':product_specifications' => $product_specifications,
-    ':category_id'            => $category_id,
-    ':image'                  => ltrim($main_image_path ?? 'assets/images/no-image.png', '/')
-    ]);
+        (:product_id, :sku, :name, :description, :price, :sale_price, :stock_quantity, :status,
+        :weight, :origin, :freshness_level, :category_id, :image)
+");
+$stmt->execute([
+    ':product_id'   => $product_id,
+    ':sku'          => $sku,
+    ':name'         => $name,
+    ':description'  => $description,
+    ':price'        => $price,
+    ':sale_price'   => $sale_price,
+    ':stock_quantity' => $stock_quantity,
+    ':status'       => $status,
+    ':weight'       => $_POST['weight'] ?? 0,
+    ':origin'       => $_POST['origin'] ?? '',
+    ':freshness_level' => $_POST['freshness_level'] ?? '',
+    ':category_id'  => $category_id,
+    ':image'        => ltrim($main_image_path, '/')
+]);
+
 
 
     // Insert GALLERY images ONLY into product_images (do NOT insert main image here)
@@ -212,17 +216,30 @@ include '../includes/header.php';
                         </select>
                     </div>
 
+                        <div class="form-group">
+                            <label for="weight">Weight (KG) *</label>
+                            <input type="number" id="weight" name="weight" step="0.01" min="0.1" required>
+                        </div>
+
                     <div class="form-group">
-                        <label for="product_features">Features</label>
-                        <textarea name="product_features" rows="3"></textarea>
+                        <label for="origin">Origin *</label>
+                        <select id="origin" name="origin" required>
+                            <option value="Local">Local</option>
+                            <option value="Imported">Imported</option>
+                            <option value="Deep Sea">Deep Sea</option>
+                            <option value="Aquaculture">Aquaculture Farm</option>
+                        </select>
                     </div>
 
                     <div class="form-group">
-                        <label for="product_specifications">Specifications</label>
-                        <textarea name="product_specifications" rows="4"></textarea>
+                        <label for="freshness_level">Freshness Level *</label>
+                        <select id="freshness_level" name="freshness_level" required>
+                            <option value="Fresh">Fresh</option>
+                            <option value="Live">Live</option>
+                            <option value="Chilled">Chilled</option>
+                            <option value="Frozen">Frozen</option>
+                        </select>
                     </div>
-
-
                 </div>
 
                 <div>

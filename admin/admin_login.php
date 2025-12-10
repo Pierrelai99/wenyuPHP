@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login - ToyLand Store</title>
+    <title>Admin Login - Fresh Catch Seafood</title>
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
@@ -57,8 +57,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="login-layout">
                 <div class="login-form-container">
                     <div class="form-header">
-                        <h1>Admin Access</h1>
-                        <p>Secure admin login portal</p>
+                        <h1>Seafood Stall Admin</h1>
+                        <p>Fresh catch management portal</p>
                         <?php if ($error): ?>
                             <div class="alert alert-error">
                                 <i class="fas fa-exclamation-circle"></i>

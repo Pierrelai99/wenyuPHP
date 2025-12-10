@@ -38,13 +38,13 @@ session_start();
             <input type="hidden" name="action" value="login">
             
             <div class="form-group">
-                <label>Email (try: admin@toylandstore.com)</label>
-                <input type="email" name="email" value="admin@toylandstore.com" required>
+                <label>Email (try: admin@gmail.com)</label>
+                <input type="email" name="email" value="admin@gmail.com" required>
             </div>
             
             <div class="form-group">
-                <label>Password (try: admin123)</label>
-                <input type="password" name="password" value="admin123" required>
+                <label>Password (try: 123)</label>
+                <input type="password" name="password" value="123" required>
             </div>
             
             <button type="submit">Login</button>

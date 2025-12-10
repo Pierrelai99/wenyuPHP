@@ -10,8 +10,8 @@ $root_path = $is_subdirectory ? '../' : '';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo isset($page_title) ? $page_title . ' - ' : ''; ?>Toy Land</title>
-    <meta name="description" content="<?php echo isset($page_description) ? $page_description : 'Where Fun Comes to Life! Discover toys that spark imagination and smiles'; ?>">
+    <title><?php echo isset($page_title) ? $page_title . ' - ' : ''; ?>Fishy Wishy Seafood Store</title>
+    <meta name="description" content="<?php echo isset($page_description) ? $page_description : 'Fresh Seafood Daily! Quality catches from ocean to your table'; ?>">
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&display=swap" rel="stylesheet">
@@ -33,12 +33,12 @@ $root_path = $is_subdirectory ? '../' : '';
     <div class="top-bar">
         <div class="container">
             <div class="top-bar-left">
-                <span>🚀 Fast Delivery</span>
-                <span>🧸 Unique Characters</span>
-                <span>🎁 Gift Ready</span>
+                <span>🐟 Fresh Daily</span>
+                <span>🦐 Quality Guaranteed</span>
+                <span>🎣 Locally Sourced</span>
             </div>
             <div class="top-bar-right">
-                <a href="shipping.php">Free Shipping on Orders Over $50</a>
+                <a href="shipping.php">Free Delivery on Orders Over $50</a>
                 <div class="social-links">
                     <a href="#"><i class="fab fa-facebook"></i></a>
                     <a href="#"><i class="fab fa-twitter"></i></a>
