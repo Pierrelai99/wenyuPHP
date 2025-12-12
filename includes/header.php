@@ -71,7 +71,7 @@ $root_path = $is_subdirectory ? '../' : '';
                 
                 <div class="header-actions">
                     <div class="user-account">
-                        <?php if (isset($_SESSION['user_id'])): ?>
+                        <?php if (isset($_SESSION['user_code'])): ?> 
                             <a href="<?php echo $root_path; ?>member/dashboard.php">
                                 <i class="fas fa-user"></i> 
                                 <span>My Account</span>

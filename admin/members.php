@@ -2,10 +2,11 @@
 session_start();
 
 // Check if user is logged in and is admin
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+if (!isset($_SESSION['user_code']) || $_SESSION['role'] !== 'admin') {
     header('Location: admin_login.php');
     exit();
 }
+
 
 require_once '../includes/db.php';
 
@@ -14,11 +15,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_code'])) {
     $delete_code = $_POST['delete_code'];
 
     try {
-        // Delete user profile first (foreign key constraint)
-        $pdo->prepare("DELETE FROM user_profiles WHERE user_code = ?")->execute([$delete_code]);
-        
-        // Delete user account
-        $pdo->prepare("DELETE FROM users WHERE user_code = ?")->execute([$delete_code]);
+        $pdo->prepare("DELETE FROM seafood_user_profiles WHERE user_code = ?")->execute([$delete_code]);
+        $pdo->prepare("DELETE FROM seafood_users WHERE user_code = ?")->execute([$delete_code]);
+
 
         $_SESSION['success'] = "Customer account deleted successfully!";
     } catch (Throwable $e) {
@@ -35,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_role'])) {
     $new_role = $_POST['new_role'];
 
     try {
-        $stmt = $pdo->prepare("UPDATE users SET user_role = ? WHERE user_code = ?");
+        $stmt = $pdo->prepare("UPDATE seafood_users SET user_role = ? WHERE user_code = ?");
         $stmt->execute([$new_role, $user_code]);
         $_SESSION['success'] = "Customer role updated successfully!";
     } catch (Throwable $e) {
@@ -53,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_promotions']))
     $new_value = $current_value ? 0 : 1;
 
     try {
-        $stmt = $pdo->prepare("UPDATE user_profiles SET receive_promotions = ? WHERE user_code = ?");
+        $stmt = $pdo->prepare("UPDATE seafood_user_profiles SET receive_promotions = ? WHERE user_code = ?");
         $stmt->execute([$new_value, $user_code]);
         $_SESSION['success'] = "Promotions preference updated!";
     } catch (Throwable $e) {
@@ -117,8 +116,8 @@ $sql = "SELECT
             p.address,
             p.receive_updates,
             p.receive_promotions
-        FROM users u
-        LEFT JOIN user_profiles p ON u.user_code = p.user_code
+        FROM seafood_users u
+        LEFT JOIN seafood_user_profiles p ON u.user_code = p.user_code
         $where
         ORDER BY $orderBy";
 
@@ -131,7 +130,7 @@ $stats_sql = "SELECT
                 COUNT(*) as total_customers,
                 SUM(CASE WHEN user_role = 'customer' THEN 1 ELSE 0 END) as customers,
                 SUM(CASE WHEN user_role = 'admin' THEN 1 ELSE 0 END) as admins
-              FROM users";
+              FROM seafood_users";
 $stats = $pdo->query($stats_sql)->fetch(PDO::FETCH_ASSOC);
 
 $page_title = "Manage Customers";
@@ -173,7 +172,7 @@ include '../includes/header.php';
 
         <!-- Filters & Search -->
         <div class="filters" style="margin-bottom:20px; display:flex; gap:10px; flex-wrap:wrap;">
-            <form method="get" action="customers.php" style="flex:1; display:flex; gap:10px; min-width:300px;">
+            <form method="get" action="members.php" style="flex:1; display:flex; gap:10px; min-width:300px;">
                 <input type="text" name="search" value="<?= htmlspecialchars($search) ?>" 
                        placeholder="Search by name, email, or code..." 
                        style="flex:1; padding:10px; border:1px solid #ddd; border-radius:5px;">

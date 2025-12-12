@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Generate order number
     $order_no = "ORD" . date("YmdHis");
 
-    // Insert order
+    // Insert main order
     $sql = "INSERT INTO seafood_orders 
             (user_code, order_no, total_price, shipping_address, billing_address, payment_method, payment_status)
             VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -47,16 +47,58 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $shipping_address,
         $billing_address,
         $payment_method,
-        "paid"  // lecturer does not care about payment API
+        "paid"  // simulate successful payment
     ]);
 
-    // Clear cart after order created
-    unset($_SESSION['cart']);
+    // Get auto-generated order_id
+    $order_id = $pdo->lastInsertId();
 
-    // Redirect to thank you page
+
+    // -------------------------------------------------
+    // INSERT ORDER ITEMS (NEW LOGIC)
+    // -------------------------------------------------
+    $item_sql = "
+        INSERT INTO seafood_order_items 
+        (order_id, product_id, product_name, unit_price, quantity, subtotal, product_image)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    ";
+    $item_stmt = $pdo->prepare($item_sql);
+
+    foreach ($_SESSION['cart'] as $item) {
+
+        $product_id = $item['id'];
+        $name = $item['name'];
+        $unit_price = $item['price'];
+        $qty = $item['qty'];
+        $subtotal = $unit_price * $qty;
+
+        // Fix image path to store a clean path
+        $img_path = ltrim($item['image'], '/');
+
+        $item_stmt->execute([
+            $order_id,
+            $product_id,
+            $name,
+            $unit_price,
+            $qty,
+            $subtotal,
+            $img_path
+        ]);
+    }
+
+
+    // -------------------------------------------------
+    // CLEAR CART AFTER CHECKOUT
+    // -------------------------------------------------
+    unset($_SESSION['cart']);
+    unset($_SESSION['cart_count']);
+
+
+    // Redirect to success page
     header("Location: order_success.php?order_no=$order_no");
     exit;
 }
+
 
 // page UI
 $page_title = "Checkout";

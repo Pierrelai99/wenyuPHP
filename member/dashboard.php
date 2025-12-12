@@ -2,10 +2,11 @@
 session_start();
 
 // Check if user is logged in and is admin
-if (!isset($_SESSION['user_code']) || $_SESSION['role'] !== 'member') {
+if (!isset($_SESSION['user_code']) || $_SESSION['role'] != 'customer') {
     header('Location: ../public/login.php');
     exit();
 }
+
 
 
 // Page variables
@@ -85,7 +86,7 @@ include '../includes/header.php';
             <h2>🎣 Account Information</h2>
             <div class="info-grid">
                 <div class="info-item">
-                    <strong>🆔 User ID:</strong> <?php echo htmlspecialchars($_SESSION['user_id']); ?>
+                    <strong>🆔 User ID:</strong> <?php echo htmlspecialchars($_SESSION['user_code']); ?>
                 </div>
                 <div class="info-item">
                     <strong>👤 Username:</strong> <?php echo htmlspecialchars($_SESSION['username']); ?>
