@@ -1,15 +1,16 @@
 <?php
 session_start();
 
-// Check if user is logged in
-if (!isset($_SESSION['user_id'])) {
+// Check if user is logged in and is admin
+if (!isset($_SESSION['user_code']) || $_SESSION['role'] !== 'member') {
     header('Location: ../public/login.php');
     exit();
 }
 
+
 // Page variables
 $page_title = "Member Dashboard";
-$page_description = "Your personal ToyLand Store dashboard";
+$page_description = "Your personal FishyWishy Seafood Store dashboard";
 $show_breadcrumb = true;
 $breadcrumb_items = [
     ['url' => 'dashboard.php', 'title' => 'Dashboard']
@@ -23,8 +24,8 @@ include '../includes/header.php';
 <section class="dashboard-section">
     <div class="container">
         <div class="dashboard-header">
-            <h1>🎉 Welcome back, <?php echo htmlspecialchars($_SESSION['username']); ?>!</h1>
-            <p>🧸 Manage your account and track your toy adventures</p>
+            <h1>🐟 Welcome back, <?php echo htmlspecialchars($_SESSION['username']); ?>!</h1>
+            <p>🦐 Manage your account and track your fresh seafood orders</p>
         </div>
         
         <?php if (isset($_SESSION['success'])): ?>
@@ -41,7 +42,7 @@ include '../includes/header.php';
                 </div>
                 <div class="card-content">
                     <h3>My Orders</h3>
-                    <p>View and track your order history</p>
+                    <p>View and track your seafood deliveries</p>
                     <a href="orders.php" class="btn btn-primary">View Orders</a>
                 </div>
             </div>
@@ -51,9 +52,9 @@ include '../includes/header.php';
                     <i class="fas fa-heart"></i>
                 </div>
                 <div class="card-content">
-                    <h3>💖 Wishlist</h3>
-                    <p>Save amazing toys for later purchase</p>
-                    <a href="wishlist.php" class="btn btn-primary">View Wishlist</a>
+                    <h3>💖 Favorites</h3>
+                    <p>Save your preferred seafood for quick reorder</p>
+                    <a href="wishlist.php" class="btn btn-primary">View Favorites</a>
                 </div>
             </div>
             
@@ -63,7 +64,7 @@ include '../includes/header.php';
                 </div>
                 <div class="card-content">
                     <h3>⭐ My Reviews</h3>
-                    <p>Share your toy experiences</p>
+                    <p>Share your seafood quality experience</p>
                     <a href="reviews.php" class="btn btn-primary">View Reviews</a>
                 </div>
             </div>
@@ -74,14 +75,14 @@ include '../includes/header.php';
                 </div>
                 <div class="card-content">
                     <h3>👤 Account Settings</h3>
-                    <p>Update your profile information</p>
+                    <p>Update delivery address and preferences</p>
                     <a href="profile.php" class="btn btn-primary">Edit Profile</a>
                 </div>
             </div>
         </div>
         
         <div class="user-info">
-            <h2>🎮 Account Information</h2>
+            <h2>🎣 Account Information</h2>
             <div class="info-grid">
                 <div class="info-item">
                     <strong>🆔 User ID:</strong> <?php echo htmlspecialchars($_SESSION['user_id']); ?>
@@ -99,8 +100,3 @@ include '../includes/header.php';
         </div>
     </div>
 </section>
-
-<?php
-// Include footer
-include '../includes/footer.php';
-?>

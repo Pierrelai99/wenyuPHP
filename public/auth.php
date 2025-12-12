@@ -71,7 +71,7 @@ if ($user && $password === $user['pwd_hash']) {
             if ($user['user_role'] === 'admin') {
                 header('Location: ../admin/dashboard.php');
             } else {
-                header('Location: ../public/products.php');
+                header('Location: ../member/dashboard.php');
             }
             exit();
 
