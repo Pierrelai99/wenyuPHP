@@ -1,419 +1,203 @@
 <?php
 session_start();
-require_once '../includes/db.php';
-require_once '../includes/functions.php';
+require_once "../includes/db.php";
 
-if (!isset($_GET['id'])) {
-    header("Location: products.php");
+// Only admin can access
+if (!isset($_SESSION['user_code']) || $_SESSION['role'] !== 'admin') {
+    header("Location: ../public/login.php");
     exit();
 }
 
-$product_id = $_GET['id'];
-
-function deleteFileIfExists($path) {
-    $fullPath = __DIR__ . '/../' . $path;
-    if ($path && file_exists($fullPath) && strpos($path, 'no-image.png') === false) {
-        unlink($fullPath);
-    }
+// Validate product ID
+if (!isset($_GET['id'])) {
+    header("Location: product_maintenance.php");
+    exit();
 }
 
-//Helpers for fileUpload
-function handleFileUpload($file, $uploadDirAbs, $uploadDirWeb) {
-    // Only proceed if a file was actually chosen
-    if (!isset($file['error']) || $file['error'] !== UPLOAD_ERR_OK) {
-        return null;
-    }
+$product_id = intval($_GET['id']);
 
-    // Basic allowlist (optional but safer)
-    $allowed = ['jpg','jpeg','png','gif','webp'];
-    $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-    if (!in_array($ext, $allowed)) {
-        return null;
-    }
-
-    // Ensure folder exists
-    if (!is_dir($uploadDirAbs)) {
-        @mkdir($uploadDirAbs, 0775, true);
-    }
-
-    // Generate filename and move
-    $filename  = uniqid('prod_', true) . '.' . $ext;
-    $targetAbs = $uploadDirAbs . $filename;
-    if (move_uploaded_file($file['tmp_name'], $targetAbs)) {
-        return $uploadDirWeb . $filename;
-    }
-
-    return null;
-}
-
-// --- Fetch categories for dropdown ---
-$categories = $pdo->query("SELECT category_id, name FROM categories WHERE status = 'active' ORDER BY name")->fetchAll();
-
-// --- Fectch product ---
-$stmt = $pdo->prepare("SELECT * FROM products WHERE product_id = ?");
+/* ---------------------------------------------------------
+   1. LOAD PRODUCT DATA
+---------------------------------------------------------- */
+$stmt = $pdo->prepare("
+    SELECT * FROM seafood_products WHERE product_id = ?
+");
 $stmt->execute([$product_id]);
 $product = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if (!$product){
+if (!$product) {
     $_SESSION['error'] = "Product not found.";
-    header('Location: products.php');
+    header("Location: product_maintenance.php");
     exit();
 }
 
-// --- Fetch gallery images ---
-$galleryStmt = $pdo->prepare("SELECT * FROM product_images WHERE product_id = ? ORDER BY image_id ASC");
-$galleryStmt->execute([$product_id]);
-$galleryImages = $galleryStmt->fetchAll(PDO::FETCH_ASSOC);
+/* ---------------------------------------------------------
+   2. LOAD CATEGORIES
+---------------------------------------------------------- */
+$cat_stmt = $pdo->query("SELECT category_id, category_name FROM seafood_categories WHERE status='active'");
+$categories = $cat_stmt->fetchAll(PDO::FETCH_ASSOC);
 
-
-// Handle POST uodate
+/* ---------------------------------------------------------
+   3. HANDLE UPDATE SUBMISSION
+---------------------------------------------------------- */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $name = trim($_POST['name'] ?? '');
-    $description = trim($_POST['description'] ?? '');
-    $price = (float)($_POST['price'] ?? 0);
-    $sale_price = ($_POST['sale_price'] === '' ? null : (float)$_POST['sale_price']);
-    $stock_quantity = (int)($_POST['stock_quantity'] ?? 0);
-    $status = ($_POST['status'] ?? 'inactive') === 'active' ? 'active' : 'inactive';
-    $product_features = trim($_POST['product_features'] ?? '');
-    $product_specifications = trim($_POST['product_specifications'] ?? '');
-    $category_id = $_POST['category_id'] ?? '';
 
-    if ($sale_price === null) $sale_price = $price;
+    $name = trim($_POST['product_name']);
+    $desc = trim($_POST['product_desc']);
+    $price = $_POST['price_per_kg'];
+    $promo = $_POST['promo_price'] ?: null;
+    $stock = $_POST['stock_kg'];
+    $category = $_POST['category_id'];
+    $freshness = $_POST['freshness_level'];
+    $origin = trim($_POST['origin_country']);
+    $weight = $_POST['weight_per_unit'] ?: null;
+    $harvest = $_POST['harvest_date'] ?: null;
+    $storage = trim($_POST['storage_temp']);
+    $status = $_POST['status'];
+    $featured = isset($_POST['featured']) ? 1 : 0;
 
-    $uploadDirAbs = rtrim(__DIR__ . '/../assets/images/products/', '/\\') . DIRECTORY_SEPARATOR;
-    $uploadDirWeb = 'assets/images/products/';
+    /* ---------------------------
+       IMAGE UPLOAD (optional)
+    -----------------------------*/
+    $image_path = $product['product_image']; // default old image
 
-    // Update main image if uploaded
-    $main_image_path = $product['image']; // keep existing if not updated
-    if (!empty($_FILES['main_image']['name'])) {
-        // delete old file if exists
-        deleteFileIfExists($product['image']);
-        
-        // upload new one
-        $uploaded_path = handleFileUpload($_FILES['main_image'], $uploadDirAbs, $uploadDirWeb);
-        if ($uploaded_path) {
-            $main_image_path = ltrim($uploaded_path, '/');
+    if (!empty($_FILES['product_image']['name'])) {
+
+        $file_name = time() . "_" . basename($_FILES['product_image']['name']);
+        $target = "../assets/products/" . $file_name;
+
+        if (move_uploaded_file($_FILES['product_image']['tmp_name'], $target)) {
+            $image_path = "assets/products/" . $file_name;
         }
     }
 
+    /* ---------------------------
+       UPDATE PRODUCT
+    -----------------------------*/
+    $update = $pdo->prepare("
+        UPDATE seafood_products
+        SET product_name = ?, product_desc = ?, price_per_kg = ?, promo_price = ?, 
+            stock_kg = ?, category_id = ?, product_image = ?, freshness_level = ?,
+            origin_country = ?, weight_per_unit = ?, harvest_date = ?, storage_temp = ?,
+            status = ?, featured = ?
+        WHERE product_id = ?
+    ");
 
-    try {
-         $pdo->beginTransaction();
+    $update->execute([
+        $name, $desc, $price, $promo, $stock, $category,
+        $image_path, $freshness, $origin, $weight, $harvest,
+        $storage, $status, $featured,
+        $product_id
+    ]);
 
-         // --- Handle Remove Images FIRST (before adding new ones) ---
-        if (!empty($_POST['remove_images'])) {
-            foreach ($_POST['remove_images'] as $imgId) {
-                // Get image path before deleting
-                $stmtGetPath = $pdo->prepare("SELECT image_path FROM product_images WHERE image_id = ? AND product_id = ?");
-                $stmtGetPath->execute([$imgId, $product_id]);
-                $imgPath = $stmtGetPath->fetchColumn();
+    $_SESSION['success'] = "Product updated successfully!";
 
-                if ($imgPath) {
-                    deleteFileIfExists($imgPath);
-                }
-
-                // delete from DB
-                $stmtDel = $pdo->prepare("DELETE FROM product_images WHERE image_id = ? AND product_id = ?");
-                $stmtDel->execute([$imgId, $product_id]);
-            }
-        }
-
-        // Update product
-        $stmt =  $pdo->prepare("
-            UPDATE products SET
-                name = :name,
-                description = :description,
-                price = :price,
-                sale_price = :sale_price,
-                stock_quantity = :stock_quantity,
-                status = :status,
-                product_features = :product_features,
-                product_specifications = :product_specifications,
-                category_id = :category_id,
-                image = :image,
-                updated_at = NOW()
-            WHERE product_id = :id
-        ");
-        $stmt->execute([
-            ':name' => $name,
-            ':description' => $description,
-            ':price' => $price,
-            ':sale_price' => $sale_price,
-            ':stock_quantity' => $stock_quantity,
-            ':status' => $status,
-            ':product_features' => $product_features,
-            ':product_specifications' => $product_specifications,
-            ':category_id' => $category_id,
-            ':image' => ltrim($main_image_path ?? 'assets/images/no-image.png', '/'),
-            ':id' => $product_id
-        ]);
-
-        // Add new gallery images if uploaded
-       if (!empty($_FILES['gallery']['name'][0])) {
-            foreach ($_FILES['gallery']['name'] as $key => $galleryName) {
-                if (empty($galleryName)) continue; // Skip empty files
-                
-                $file = [
-                    'name'     => $_FILES['gallery']['name'][$key],
-                    'type'     => $_FILES['gallery']['type'][$key],
-                    'tmp_name' => $_FILES['gallery']['tmp_name'][$key],
-                    'error'    => $_FILES['gallery']['error'][$key],
-                    'size'     => $_FILES['gallery']['size'][$key]
-                ];
-                
-                $galleryPath = handleFileUpload($file, $uploadDirAbs, $uploadDirWeb);
-                if ($galleryPath) {
-                    $stmtImg = $pdo->prepare("INSERT INTO product_images (product_id, image_path) VALUES (?, ?)");
-                    $stmtImg->execute([$product_id, ltrim($galleryPath, '/')]);
-                }
-            }
-        }
-
-        $pdo->commit();
-
-        $_SESSION['success'] = "Product updated successfully!";
-        header("Location: products.php");
-        exit;
-
-    } catch (Throwable $e) {
-        if ($pdo->inTransaction()) $pdo->rollBack();
-        $_SESSION['error'] = "Error updating product: " . $e->getMessage();
-    }
+    header("Location: product_maintenance.php");
+    exit();
 }
 
-include '../includes/header.php';
+// Page UI
+$page_title = "Edit Product";
+include "../includes/admin_header.php";
 ?>
 
 <section class="admin-section">
     <div class="container">
-        <h1>Edit Product</h1>
 
-        <?php if (isset($_SESSION['success'])): ?>
-            <div class="alert alert-success"><?= $_SESSION['success']; unset($_SESSION['success']); ?></div>
-        <?php endif; ?>
-        <?php if (isset($_SESSION['error'])): ?>
-            <div class="alert alert-error"><?= $_SESSION['error']; unset($_SESSION['error']); ?></div>
-        <?php endif; ?>
+        <h1>✏️ Edit Product</h1>
 
-        <form action="product_edit.php?id=<?= $product_id ?>" method="POST" enctype="multipart/form-data">
-            <div class="form-group">
-                <label>Name</label>
-                <input type="text" name="name" value="<?= htmlspecialchars($product['name']) ?>" required>
-            </div>
+        <a href="product_maintenance.php" class="btn btn-secondary" style="margin-bottom:20px;">
+            ← Back to Product Maintenance
+        </a>
 
-            <div class="form-group">
+        <div class="admin-box">
+
+            <form method="POST" enctype="multipart/form-data" class="admin-form">
+
+                <label>Product Name</label>
+                <input type="text" name="product_name" value="<?= htmlspecialchars($product['product_name']) ?>" required>
+
                 <label>Description</label>
-                <textarea name="description" rows="4"><?= htmlspecialchars($product['description']) ?></textarea>
-            </div>
+                <textarea name="product_desc" rows="3"><?= htmlspecialchars($product['product_desc']) ?></textarea>
 
-            <div class="form-group">
-                <label>Price (RM)</label>
-                <input type="number" step="0.01" name="price" value="<?= $product['price'] ?>" required>
-            </div>
+                <label>Price per KG</label>
+                <input type="number" step="0.01" name="price_per_kg" value="<?= $product['price_per_kg'] ?>" required>
 
-            <div class="form-group">
-                <label>Sale Price (RM)</label>
-                <input type="number" step="0.01" name="sale_price" value="<?= $product['sale_price'] ?>">
-            </div>
+                <label>Promo Price</label>
+                <input type="number" step="0.01" name="promo_price" value="<?= $product['promo_price'] ?>">
 
-            <div class="form-group">
-                <label for="stock_quantity">Stock Quantity *</label>
-                <input type="number" id="stock_quantity" name="stock_quantity" min="0" 
-                       value="<?= htmlspecialchars($product['stock_quantity'] ?? 0) ?>" required>
-            </div>
+                <label>Stock (KG)</label>
+                <input type="number" step="0.1" name="stock_kg" value="<?= $product['stock_kg'] ?>" required>
 
-            <div class="form-group">
-                <label>Status</label>
-                <select name="status">
-                    <option value="active" <?= $product['status'] === 'active' ? 'selected' : '' ?>>Active</option>
-                    <option value="inactive" <?= $product['status'] === 'inactive' ? 'selected' : '' ?>>Inactive</option>
-                </select>
-            </div>
-
-            <div class="form-group">
                 <label>Category</label>
                 <select name="category_id" required>
-                    <option value="">-- Select Category --</option>
-                    <?php foreach ($categories as $cat): ?>
-                        <option value="<?= $cat['category_id'] ?>" <?= $cat['category_id'] == $product['category_id'] ? 'selected' : '' ?>>
-                            <?= htmlspecialchars($cat['name']) ?>
+                    <?php foreach ($categories as $c): ?>
+                        <option value="<?= $c['category_id'] ?>" 
+                            <?= ($product['category_id'] == $c['category_id']) ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($c['category_name']) ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
-            </div>
 
-            <div class="form-group">
-                <label>Features</label>
-                <textarea name="product_features" rows="3"><?= htmlspecialchars($product['product_features']) ?></textarea>
-            </div>
+                <label>Freshness Level</label>
+                <select name="freshness_level">
+                    <?php foreach (['fresh','frozen','live','processed'] as $fl): ?>
+                        <option value="<?= $fl ?>" <?= ($product['freshness_level'] === $fl) ? 'selected' : '' ?>>
+                            <?= ucfirst($fl) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
 
-            <div class="form-group">
-                <label>Specifications</label>
-                <textarea name="product_specifications" rows="4"><?= htmlspecialchars($product['product_specifications']) ?></textarea>
-            </div>
+                <label>Origin Country</label>
+                <input type="text" name="origin_country" value="<?= htmlspecialchars($product['origin_country']) ?>">
 
-            <div class="form-group">
-                <label>Main Image</label>
-                <?php if ($product['image']): ?>
-                    <img src="/<?= htmlspecialchars($product['image']) ?>" alt="" style="max-width:150px;display:block;">
-                <?php endif; ?>
-                <input type="file" name="main_image" accept="image/*">
-            </div>
+                <label>Weight per unit (g)</label>
+                <input type="number" step="0.1" name="weight_per_unit" value="<?= $product['weight_per_unit'] ?>">
 
-            <h3>Gallery Images (Drag & Drop to Reorder)</h3>
-            <ul id="gallery-list" style="list-style:none; padding:0; display:flex; flex-wrap:wrap; gap:15px;">
-                <?php foreach ($galleryImages as $img): ?>
-                    <li data-id="<?= $img['image_id'] ?>" style="border:1px solid #ccc; padding:10px; background:#fafafa; cursor:move;">
-                     <img src="/<?= htmlspecialchars($img['image_path']) ?>" alt="" style="max-width:120px; display:block; margin-bottom:5px;">
+                <label>Harvest Date</label>
+                <input type="date" name="harvest_date" value="<?= $product['harvest_date'] ?>">
+
+                <label>Storage Temperature</label>
+                <input type="text" name="storage_temp" value="<?= htmlspecialchars($product['storage_temp']) ?>">
+
+                <label>Status</label>
+                <select name="status">
+                    <?php foreach (['available','unavailable','sold_out'] as $st): ?>
+                        <option value="<?= $st ?>" <?= ($product['status'] === $st) ? 'selected' : '' ?>>
+                            <?= ucfirst(str_replace('_',' ', $st)) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+
                 <label>
-                  <input type="checkbox" name="remove_images[]" value="<?= $img['image_id'] ?>"> Remove
+                    <input type="checkbox" name="featured" <?= $product['featured'] ? 'checked' : '' ?>>
+                    Featured Product
                 </label>
-                </li>
-               <?php endforeach; ?>
-            </ul>
 
-            <?php if (empty($galleryImages)): ?>
-                <p style="color:#666; font-style:italic;">No gallery images yet.</p>
-            <?php endif; ?>
+                <label>Current Image</label><br>
+                <img src="../<?= $product['product_image'] ?>" width="120" style="border-radius:8px; margin-bottom:10px;"><br><br>
 
-            <div class="form-group">
-                <label for="gallery_images">Add More Gallery Images</label>
-                <input type="file" id="gallery_images" name="gallery[]" accept="image/*" multiple style="display: none;">
-                
-                <div style="margin-bottom: 10px;">
-                    <button type="button" id="select_files_btn" class="btn btn-secondary" style="margin-right: 10px;">
-                        Choose Files
-                    </button>
-                    <button type="button" id="add_more_files_btn" class="btn btn-secondary" style="margin-right: 10px;">
-                        Add More Files
-                    </button>
-                    <button type="button" id="clear_files_btn" class="btn btn-secondary">
-                        Clear All
-                    </button>
-                </div>
-                
-                <div id="preview" style="margin-top:10px;">
-                    <em>No files selected</em>
-                </div>
-                <small>JPG, PNG, WEBP, GIF. You can select multiple files at once or add more files in separate selections.</small>
-            </div>
+                <label>Replace Image (optional)</label>
+                <input type="file" name="product_image" accept="image/*">
 
-            <div class="form-actions">
-                <button type="submit" class="btn btn-primary">Update Product</button>
-                <a href="products.php" class="btn btn-secondary">Cancel</a>
-            </div>
-        </form>
+                <button class="btn btn-primary" style="margin-top:20px;">Update Product</button>
+
+            </form>
+
+        </div>
+
     </div>
 </section>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
-<script>
-$(function() {
-    $("#gallery-list").sortable({
-        update: function() {
-            let order = $(this).sortable("toArray", {attribute: "data-id"});
-            $.post("product_edit.php?id=<?= $product_id ?>", { sort_order: order }, function(resp) {
-                console.log("Sort update:", resp);
-            });
-        }
-    });
-});
-
-// Gallery file selection script (same as in product_add.php)
-const galleryInput = document.getElementById('gallery_images');
-const preview = document.getElementById('preview');
-const selectFilesBtn = document.getElementById('select_files_btn');
-const addMoreFilesBtn = document.getElementById('add_more_files_btn');
-const clearFilesBtn = document.getElementById('clear_files_btn');
-let selectedFiles = [];
-
-// Button event listeners
-selectFilesBtn.addEventListener('click', () => {
-    selectedFiles = []; // Clear existing files when "Choose Files" is clicked
-    galleryInput.click();
-});
-
-addMoreFilesBtn.addEventListener('click', () => {
-    galleryInput.click(); // Keep existing files when "Add More" is clicked
-});
-
-clearFilesBtn.addEventListener('click', () => {
-    selectedFiles = [];
-    updatePreview();
-    updateFileInput();
-});
-
-// File input change handler
-galleryInput.addEventListener('change', function(e) {
-    Array.from(e.target.files).forEach(file => {
-        const exists = selectedFiles.some(f => f.name === file.name && f.size === file.size);
-        if (!exists) {
-            selectedFiles.push(file);
-        }
-    });
-    
-    updatePreview();
-    updateFileInput();
-});
-
-function updatePreview() {
-    preview.innerHTML = "";
-    
-    if (selectedFiles.length === 0) {
-        preview.innerHTML = "<em>No files selected</em>";
-        return;
-    }
-    
-    selectedFiles.forEach((file, i) => {
-        const div = document.createElement("div");
-        div.style.marginBottom = "8px";
-        div.style.padding = "8px";
-        div.style.backgroundColor = "#f8f9fa";
-        div.style.border = "1px solid #dee2e6";
-        div.style.borderRadius = "4px";
-        div.style.display = "flex";
-        div.style.justifyContent = "space-between";
-        div.style.alignItems = "center";
-        
-        const fileInfo = document.createElement("span");
-        fileInfo.textContent = `${i+1}. ${file.name} (${(file.size/1024/1024).toFixed(2)} MB)`;
-        
-        const removeBtn = document.createElement("button");
-        removeBtn.type = "button";
-        removeBtn.textContent = "×";
-        removeBtn.style.backgroundColor = "#dc3545";
-        removeBtn.style.color = "white";
-        removeBtn.style.border = "none";
-        removeBtn.style.borderRadius = "50%";
-        removeBtn.style.width = "24px";
-        removeBtn.style.height = "24px";
-        removeBtn.style.cursor = "pointer";
-        removeBtn.style.fontSize = "16px";
-        removeBtn.style.lineHeight = "1";
-        
-        removeBtn.addEventListener('click', function() {
-            selectedFiles.splice(i, 1);
-            updatePreview();
-            updateFileInput();
-        });
-        
-        div.appendChild(fileInfo);
-        div.appendChild(removeBtn);
-        preview.appendChild(div);
-    });
+<style>
+.admin-section { padding: 30px 0; }
+.admin-box { background:#fff; padding:20px; border-radius:8px; }
+.admin-form input, select, textarea {
+    width:100%; padding:10px; margin-bottom:12px;
+    border-radius:5px; border:1px solid #ccc;
 }
+.btn-secondary { background:#6c757d; color:#fff; padding:8px 15px; border-radius:5px; }
+.btn-primary { background:#0275d8; color:#fff; padding:10px 18px; border-radius:5px; }
+</style>
 
-function updateFileInput() {
-    const dt = new DataTransfer();
-    selectedFiles.forEach(file => dt.items.add(file));
-    galleryInput.files = dt.files;
-}
-</script>
-
-
-
-<?php
-include '../includes/footer.php';
-?>
-
+<?php include "../includes/admin_footer.php"; ?>

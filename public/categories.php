@@ -3,7 +3,11 @@ session_start();
 require_once '../includes/db.php';
 
 // Fetch all main categories (used in sidebar/menu)
-$main_categories = $pdo->query("SELECT * FROM categories WHERE parent_id IS NULL AND status = 'active'")->fetchAll();
+$main_categories = $pdo->query("
+    SELECT * FROM seafood_categories 
+    WHERE parent_id IS NULL AND status='active'
+")->fetchAll(PDO::FETCH_ASSOC);
+
 
 include '../includes/header.php';
 ?>

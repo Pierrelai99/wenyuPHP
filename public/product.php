@@ -53,6 +53,64 @@ $related_stmt = $pdo->prepare("
 ");
 $related_stmt->execute([$product['category_id'], $product_id]);
 $related = $related_stmt->fetchAll(PDO::FETCH_ASSOC);
+/* ---------------------------------------------------------
+   4. LOAD APPROVED REVIEWS
+---------------------------------------------------------- */
+$review_stmt = $pdo->prepare("
+    SELECT r.*, u.user_name 
+    FROM seafood_reviews r
+    JOIN seafood_users u ON r.user_code = u.user_code
+    WHERE r.product_id = ? AND r.review_status = 'approved'
+    ORDER BY r.created_on DESC
+");
+$review_stmt->execute([$product_id]);
+$reviews = $review_stmt->fetchAll(PDO::FETCH_ASSOC);
+/* ---------------------------------------------------------
+   5. CHECK IF USER HAS ALREADY REVIEWED THIS PRODUCT
+---------------------------------------------------------- */
+$user_has_review = false;
+
+if (isset($_SESSION['user_code'])) {
+    $check_review = $pdo->prepare("
+        SELECT review_id FROM seafood_reviews
+        WHERE user_code = ? AND product_id = ?
+    ");
+    $check_review->execute([$_SESSION['user_code'], $product_id]);
+    $user_has_review = $check_review->fetch() ? true : false;
+}
+
+/* ---------------------------------------------------------
+   6. SUBMIT A REVIEW
+---------------------------------------------------------- */
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_review'])) {
+
+    if (!isset($_SESSION['user_code'])) {
+        header("Location: login.php");
+        exit();
+    }
+
+    $rating = intval($_POST['rating']);
+    $title = trim($_POST['title']);
+    $text = trim($_POST['text']);
+
+    // Insert review as pending
+    $stmt = $pdo->prepare("
+        INSERT INTO seafood_reviews (user_code, product_id, rating, review_title, review_text,review_status)
+        VALUES (?, ?, ?, ?, ?,'approved')
+    ");
+
+    $stmt->execute([
+        $_SESSION['user_code'],
+        $product_id,
+        $rating,
+        $title,
+        $text
+    ]);
+
+    $_SESSION['success'] = "Review submitted!";
+    header("Location: product.php?id=" . $product_id);
+    exit();
+}
 
 /* ---------------------------------------------------------
    PAGE SETTINGS
@@ -153,9 +211,85 @@ include "../includes/header.php";
 
                 </div>
 
+             <!-- REVIEW SUBMISSION -->
+<h2 class="review-title-section">⭐ Write a Review</h2>
+
+<?php if (!isset($_SESSION['user_code'])): ?>
+
+    <p>You must <a href="login.php">login</a> to write a review.</p>
+
+<?php elseif ($user_has_review): ?>
+
+    <p class="already-reviewed">You already reviewed this product.</p>
+
+<?php else: ?>
+
+<form method="POST" class="review-form">
+    <label>Rating:</label>
+    <select name="rating" required>
+        <option value="">-- Select --</option>
+        <option value="5">⭐⭐⭐⭐⭐ (5)</option>
+        <option value="4">⭐⭐⭐⭐ (4)</option>
+        <option value="3">⭐⭐⭐ (3)</option>
+        <option value="2">⭐⭐ (2)</option>
+        <option value="1">⭐ (1)</option>
+    </select>
+
+    <label>Title:</label>
+    <input type="text" name="title" class="form-control" required>
+
+    <label>Review:</label>
+    <textarea name="text" rows="4" class="form-control" required></textarea>
+
+    <button name="submit_review" class="btn btn-primary" style="margin-top:10px;">
+        Submit Review
+    </button>
+</form>
+
+<?php endif; ?>
+   
+
             </div> <!-- end product-info -->
 
         </div> <!-- end layout -->
+        <!-- CUSTOMER REVIEWS SECTION -->
+<h2 class="review-title-section">📝 Customer Reviews</h2>
+
+<?php if (empty($reviews)): ?>
+    <p>No reviews yet. Be the first to review this product!</p>
+<?php else: ?>
+
+<div class="reviews-list">
+
+<?php foreach ($reviews as $r): ?>
+    <div class="review-item">
+
+        <div class="review-header">
+            <strong><?= htmlspecialchars($r['user_name']) ?></strong>
+
+            <span class="stars">
+                <?php for ($i = 1; $i <= 5; $i++): ?>
+                    <?= $i <= $r['rating'] ? "⭐" : "☆" ?>
+                <?php endfor; ?>
+            </span>
+        </div>
+
+        <?php if (!empty($r['review_title'])): ?>
+            <h4><?= htmlspecialchars($r['review_title']) ?></h4>
+        <?php endif; ?>
+
+        <p><?= nl2br(htmlspecialchars($r['review_text'])) ?></p>
+
+        <small class="review-date">
+            <?= date("d M Y", strtotime($r['created_on'])) ?>
+        </small>
+
+    </div>
+<?php endforeach; ?>
+
+</div>
+
+<?php endif; ?>
 
         <!-- RELATED PRODUCTS -->
         <h2 class="related-title">🔎 Related Products</h2>
@@ -198,6 +332,43 @@ include "../includes/header.php";
 .related-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:20px; margin-top:30px; }
 .related-card img { width:100%; border-radius:8px; }
 .related-card h4 { margin-top:10px; font-size:16px; }
+
+.review-form {
+    background:#fff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:20px;
+    max-width:600px;
+}
+
+.review-form label {
+    font-weight:bold;
+    margin-top:10px;
+}
+
+.review-item {
+    margin-top:15px;
+    padding:15px;
+    background:#fafafa;
+    border-radius:8px;
+}
+
+.review-header {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.review-item h4 {
+    margin:5px 0;
+    font-size:18px;
+}
+.review-date {
+    font-size:12px;
+    color:#666;
+}
+
 </style>
 
 <?php include "../includes/footer.php"; ?>
+

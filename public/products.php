@@ -95,15 +95,19 @@ include '../includes/header.php';
                                     <?php endif; ?>
                                 </div>
 
-                                <form method="POST"  action="cart.php" style="display:inline;">
-                                    <input type="hidden" name="product_id" value="<?= $product['product_id'] ?>">
-                                    <input type="hidden" name="name" value="<?= $product['product_name'] ?>">
-                                    <input type="hidden" name="price" value="<?= $product['price_per_kg'] ?>">
-                                    <input type="hidden" name="image" value="/<?= ltrim($product['product_image'], '/') ?>">
+                                <!-- ADD TO CART -->
+                                <form method="POST" action="cart.php">
                                     <input type="hidden" name="action" value="add">
-                                    <button type="submit" class="add-to-cart">Add to Cart</button>
-                                </form>
+                                    <input type="hidden" name="product_id" value="<?= $product['product_id'] ?>">
+                                    <input type="hidden" name="name" value="<?= htmlspecialchars($product['product_name']) ?>">
+                                    <input type="hidden" name="price" value="<?= $product['promo_price'] ?: $product['price_per_kg'] ?>">
+                                    <input type="hidden" name="image" value="<?= htmlspecialchars($product['product_image']) ?>">
 
+                                    <label>Quantity (kg):</label>
+                                    <input type="number" name="qty" min="0.5" step="0.5" value="1" required>
+
+                                    <button class="btn btn-primary">Add to Cart</button>
+                                </form>
 
                             </div>
                         </div>

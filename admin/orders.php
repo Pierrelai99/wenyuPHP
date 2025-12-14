@@ -93,7 +93,8 @@ $sql = "SELECT o.*, u.user_name, u.email
         ORDER BY $orderBy";
 
 $stmt = $pdo->prepare($sql);
-$stmt->execute();
+$stmt->execute($params);
+
 $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $page_title = "Manage Orders";
 include '../includes/header.php';

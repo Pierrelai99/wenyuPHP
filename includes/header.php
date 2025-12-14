@@ -28,6 +28,24 @@ $root_path = $is_subdirectory ? '../' : '';
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
+<?php
+if (!isset($pdo)) {
+    require_once __DIR__ . "/db.php";
+}
+?>
+<?php
+if (!isset($_SESSION['cart_count'])) {
+    $_SESSION['cart_count'] = 0;
+}
+
+if (!empty($_SESSION['cart'])) {
+    $_SESSION['cart_count'] = array_sum(
+        array_column($_SESSION['cart'], 'qty')
+    );
+}
+?>
+
+
 <body>
     <!-- Top Bar -->
     <div class="top-bar">
@@ -72,15 +90,26 @@ $root_path = $is_subdirectory ? '../' : '';
                 <div class="header-actions">
                     <div class="user-account">
                         <?php if (isset($_SESSION['user_code'])): ?> 
-                            <a href="<?php echo $root_path; ?>member/dashboard.php">
-                                <i class="fas fa-user"></i> 
-                                <span>My Account</span>
-                            </a>
-                            <a href="<?php echo $root_path; ?>public/logout.php">
-                                <i class="fas fa-sign-out-alt"></i> 
-                                <span>Logout</span>
-                            </a>
-                        <?php else: ?>
+
+                        <?php 
+                            // If admin → go to admin dashboard
+                            $dashboard_url = ($_SESSION['role'] === 'admin') 
+                                            ? $root_path . "admin/dashboard.php" 
+                                            : $root_path . "member/dashboard.php";
+                        ?>
+
+                        <a href="<?php echo $dashboard_url; ?>">
+                            <i class="fas fa-user"></i> 
+                            <span>My Account</span>
+                        </a>
+
+                        <a href="<?php echo $root_path; ?>public/logout.php">
+                            <i class="fas fa-sign-out-alt"></i> 
+                            <span>Logout</span>
+                        </a>
+
+                    <?php else: ?>
+
                             <a href="<?php echo $root_path; ?>public/login.php">
                                 <i class="fas fa-sign-in-alt"></i> 
                                 <span>Login</span>
@@ -111,12 +140,30 @@ $root_path = $is_subdirectory ? '../' : '';
                             <i class="fas fa-chevron-down"></i>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="<?php echo $root_path; ?>public/products.php?category=fish"><i class="fas fa-fish"></i> Fresh Fish</a></li>
-                            <li><a href="<?php echo $root_path; ?>public/products.php?category=crustaceans"><i class="fas fa-shrimp"></i> Crustaceans</a></li>
-                            <li><a href="<?php echo $root_path; ?>public/products.php?category=shellfish"><i class="fas fa-star"></i> Shellfish</a></li>
-                            <li><a href="<?php echo $root_path; ?>public/products.php?category=prawns"><i class="fas fa-shrimp"></i> Prawns & Shrimp</a></li>
-                            <li><a href="<?php echo $root_path; ?>public/products.php?category=crabs"><i class="fas fa-crab"></i> Crabs</a></li>
-                            <li><a href="<?php echo $root_path; ?>public/products.php?category=lobsters"><i class="fas fa-fish"></i> Lobsters</a></li>
+                            <?php
+                                $cats = $pdo->query("
+                                    SELECT category_id, category_name 
+                                    FROM seafood_categories 
+                                    WHERE parent_id IS NULL AND status='active'
+                                ")->fetchAll(PDO::FETCH_ASSOC);
+                                ?>
+
+                                <li class="dropdown">
+                                    <a href="<?php echo $root_path; ?>public/products.php">
+                                        <i class="fas fa-list"></i> Categories 
+                                        <i class="fas fa-chevron-down"></i>
+                                    </a>
+
+                                    <ul class="dropdown-menu">
+                                        <?php foreach ($cats as $c): ?>
+                                            <li>
+                                                <a href="<?php echo $root_path; ?>public/products.php?category_id=<?= $c['category_id']; ?>">
+                                                    <?= htmlspecialchars($c['category_name']); ?>
+                                                </a>
+                                            </li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                </li>
                         </ul>
                     </li>
                     <li><a href="<?php echo $root_path; ?>public/products.php?filter=new"><i class="fas fa-sparkles"></i> Fresh Arrivals</a></li>
@@ -144,3 +191,59 @@ $root_path = $is_subdirectory ? '../' : '';
         </div>
     </div>
     <?php endif; ?>
+
+    <!-- ✅ ADD THIS PART HERE -->
+<script>
+$(document).on("submit", ".add-to-cart-form", function (e) {
+    e.preventDefault();
+
+    let form = $(this);
+    let data = form.serialize();
+
+    $.ajax({
+        url: "<?php echo $root_path; ?>public/cart_ajax.php",
+        type: "POST",
+        data: data,
+        dataType: "json", // 👈 force JSON
+        success: function (response) {
+            if (response.success) {
+                $(".cart-count").text(response.cart_count);
+                showToast("🛒 Added to cart!");
+            } else {
+                alert(response.msg ?? "Add to cart failed");
+            }
+        },
+        error: function () {
+            alert("AJAX error");
+        }
+    });
+});
+
+// Toast popup
+function showToast(msg) {
+    let toast = $("<div class='toast-msg'>" + msg + "</div>");
+    $("body").append(toast);
+    toast.fadeIn(300).delay(1200).fadeOut(300, function () {
+        $(this).remove();
+    });
+}
+</script>
+
+
+<style>
+.toast-msg {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #28a745;
+    color: white;
+    padding: 12px 18px;
+    border-radius: 8px;
+    z-index: 9999;
+    font-size: 14px;
+    display: none;
+}
+</style>
+
+</body>
+</html>

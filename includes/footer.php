@@ -68,7 +68,7 @@
     <button id="back-to-top" class="back-to-top">
         <i class="fas fa-chevron-up"></i>
     </button>
-
+    
     
     <?php if (isset($page_scripts)): ?>
         <?php foreach ($page_scripts as $script): ?>

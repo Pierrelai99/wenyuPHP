@@ -44,7 +44,7 @@ include '../includes/header.php';
                 <div class="card-content">
                     <h3>Seafood Products</h3>
                     <p>Manage seafood items and fresh stock</p>
-                    <a href="products.php" class="btn btn-primary">Manage Products</a>
+                    <a href="product_maintenance.php" class="btn btn-primary">Manage Products</a>
                 </div>
             </div>
             
