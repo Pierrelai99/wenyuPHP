@@ -36,7 +36,7 @@ include '../includes/header.php';
                 <p>Today, we serve families across Malaysia and Southeast Asia, helping home cooks and seafood lovers access restaurant-quality seafood for their culinary needs, celebrating our rich coastal heritage and diverse seafood culture.</p>
             </div>
             <div class="story-image">
-                <img src="assets/images/about-story.jpg" alt="FishyWishy Seafood Store History">
+                <img src="../assets/images/about-story.jpg" alt="FishyWishy Seafood Store History">
             </div>
         </div>
     </div>
@@ -196,7 +196,7 @@ include '../includes/header.php';
                     <p>"FishyWishy Seafood Store has been our go-to for fresh fish and prawns. The quality is always excellent and the delivery is outstanding! Always arrives fresh to Selangor!"</p>
                 </div>
                 <div class="testimonial-author">
-                    <img src="assets/images/customer-1.jpg" alt="Lisa Chen">
+                    <img src="../assets/images/user.png" alt="Lisa Chen">
                     <div>
                         <h4>Lisa Wong</h4>
                         <span>Verified Customer, KL</span>
@@ -209,7 +209,7 @@ include '../includes/header.php';
                     <p>"As a restaurant owner in Johor, I appreciate the consistent quality and freshness of their seafood selection. My customers love the dishes we prepare with seafood from FishyWishy, and they deliver to our restaurant quickly."</p>
                 </div>
                 <div class="testimonial-author">
-                    <img src="assets/images/customer-2.jpg" alt="Robert Davis">
+                    <img src="../assets/images/user.png" alt="Robert Davis">
                     <div>
                         <h4>Encik Rahman</h4>
                         <span>Restaurant Owner, JB</span>
@@ -222,7 +222,7 @@ include '../includes/header.php';
                     <p>"Fast cold chain delivery across Malaysia, great prices, and amazing selection. We've been ordering here for years and never been disappointed! Perfect for Hari Raya feasts!"</p>
                 </div>
                 <div class="testimonial-author">
-                    <img src="assets/images/customer-3.jpg" alt="Maria Garcia">
+                    <img src="../assets/images/user.png" alt="Maria Garcia">
                     <div>
                         <h4>Siti Aishah</h4>
                         <span>Verified Customer, Penang</span>
