@@ -8,7 +8,7 @@ $featured_products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Page variables
 $page_title = "Home";
-$page_description = "Discover amazing toys and games for all ages at ToyLand Store. Free shipping on orders over $50!";
+$page_description = "Discover fresh, high-quality seafood sourced from trusted fisheries. Enjoy the best catches delivered to you.";
 $show_breadcrumb = false;
 
 // Include header

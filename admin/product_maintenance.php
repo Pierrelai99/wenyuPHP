@@ -221,4 +221,4 @@ include "../includes/header.php";
 .btn-primary { background:#0275d8; color:#fff; }
 </style>
 
-<?php include "../includes/admin_footer.php"; ?>
+<?php include "../includes/footer.php"; ?>
