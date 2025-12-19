@@ -212,15 +212,17 @@ include '../includes/header.php';
                                 </form>
                             </td>
                             <td>
-                                <a href="order_details.php?id=<?= urlencode($order['order_id']) ?>" 
-                                   class="btn btn-small btn-primary">View</a>
-                                <form method="post" action="orders.php" style="display:inline;" 
-                                      onsubmit="return confirm('Are you sure you want to delete this order?');">
+                                <a href="../member/order_details.php?order=<?= $order['order_id'] ?>"
+                                class="btn btn-small btn-primary">View</a>
+
+                                <form method="post" action="orders.php" style="display:inline;"
+                                    onsubmit="return confirm('Are you sure you want to delete this order?');">
                                     <input type="hidden" name="delete_order" value="1">
                                     <input type="hidden" name="order_id" value="<?= $order['order_id'] ?>">
                                     <button type="submit" class="btn btn-small btn-delete">Delete</button>
                                 </form>
                             </td>
+
                         </tr>
                     <?php endforeach; ?>
 
@@ -295,5 +297,190 @@ include '../includes/header.php';
         </div>
     </div>
 </section>
+
+<style>
+/* ---------- PAGE ---------- */
+.orders-management {
+    padding: 30px 0;
+    color: #222;
+    background: #f7f9fc;
+}
+
+.section-header h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 20px;
+}
+
+/* ---------- FILTER BAR ---------- */
+.filters form {
+    background: #ffffff;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.filters input,
+.filters select {
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #111;
+    background: #fff;
+}
+
+.filters input::placeholder {
+    color: #6b7280;
+}
+
+.filters button {
+    background: #0d6efd;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-weight: 600;
+}
+
+/* ---------- TABLE ---------- */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+
+.table thead {
+    background: #f1f5f9;
+}
+
+.table th {
+    text-align: left;
+    padding: 14px;
+    font-size: 13px;
+    color: #374151;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.table td {
+    padding: 14px;
+    font-size: 14px;
+    color: #111827;
+    border-top: 1px solid #e5e7eb;
+    vertical-align: middle;
+}
+
+.table tr:hover {
+    background: #f9fafb;
+}
+
+/* ---------- BADGES ---------- */
+.badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-block;
+}
+
+/* Payment */
+.badge-paid { background:#dcfce7; color:#166534; }
+.badge-pending { background:#fef3c7; color:#92400e; }
+.badge-failed,
+.badge-refunded { background:#fee2e2; color:#991b1b; }
+
+/* Delivery */
+.badge-pickup,
+.badge-delivery,
+.badge-tng {
+    background:#e0f2fe;
+    color:#075985;
+}
+
+/* ---------- STATUS SELECT ---------- */
+.status-select {
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    background: #ffffff;
+    font-size: 13px;
+    color: #111;
+    cursor: pointer;
+}
+
+/* ---------- BUTTONS ---------- */
+.btn-small {
+    padding: 6px 14px;
+    font-size: 13px;
+    border-radius: 6px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-primary {
+    background: #0d6efd;
+    color: #ffffff;
+    border: none;
+}
+
+.btn-delete {
+    background: #ef4444;
+    color: #ffffff;
+    border: none;
+    margin-left: 6px;
+}
+
+.btn-primary:hover { background:#0b5ed7; }
+.btn-delete:hover { background:#dc2626; }
+
+/* ---------- STATS CARDS ---------- */
+.order-stats {
+    margin-top: 40px;
+}
+
+.stat-card {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    text-align: center;
+}
+
+.stat-card h4 {
+    font-size: 14px;
+    color: #6b7280;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+.stat-number {
+    font-size: 28px;
+    font-weight: 700;
+    color: #111827;
+}
+
+/* ---------- ALERTS ---------- */
+.alert-success {
+    background: #dcfce7;
+    color: #166534;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.alert-error {
+    background: #fee2e2;
+    color: #991b1b;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+</style>
+
 
 <?php include '../includes/footer.php'; ?>

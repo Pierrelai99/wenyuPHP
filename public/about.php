@@ -103,12 +103,6 @@ include '../includes/header.php';
                 <h3>Sustainable Sourcing</h3>
             </div>
             
-            <div class="feature-item">
-                <div class="feature-icon">
-                    <i class="fas fa-shipping-fast"></i>
-                </div>
-                <h3>Fast & Cold Chain Delivery</h3>
-            </div>
             
             <div class="feature-item">
                 <div class="feature-icon">
@@ -129,6 +123,13 @@ include '../includes/header.php';
                     <i class="fas fa-percentage"></i>
                 </div>
                 <h3>Best Prices</h3>
+            </div>
+
+             <div class="feature-item">
+                <div class="feature-icon">
+                    <i class="fas fa-shipping-fast"></i>
+                </div>
+                <h3>Fast & Cold Delivery</h3>
             </div>
         </div>
     </div>

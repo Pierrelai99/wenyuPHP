@@ -54,10 +54,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_product'])) {
 
     if (!empty($_FILES['product_image']['name'])) {
         $file_name = time() . "_" . basename($_FILES['product_image']['name']);
-        $target = "../assets/products/" . $file_name;
+        $target = "../assets/images/products/" . $file_name;
 
         if (move_uploaded_file($_FILES['product_image']['tmp_name'], $target)) {
-            $image_path = "assets/products/" . $file_name;
+            $image_path = "assets/images/products/" . $file_name;
         }
     }
 

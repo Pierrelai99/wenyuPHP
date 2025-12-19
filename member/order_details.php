@@ -2,7 +2,7 @@
 session_start();
 
 // Only logged-in customers can access
-if (!isset($_SESSION['user_code']) || $_SESSION['role'] !== 'customer') {
+if (!isset($_SESSION['user_code']) || !in_array($_SESSION['role'], ['customer', 'admin'])) {
     header("Location: ../public/login.php");
     exit();
 }
@@ -18,13 +18,26 @@ if (!isset($_GET['order'])) {
 $order_id = intval($_GET['order']);
 
 // Load order (ensure belongs to this user)
-$stmt = $pdo->prepare("
-    SELECT *
-    FROM seafood_orders
-    WHERE order_id = ? AND user_code = ?
-");
-$stmt->execute([$order_id, $_SESSION['user_code']]);
+if ($_SESSION['role'] === 'admin') {
+    // Admin can see ANY order
+    $stmt = $pdo->prepare("
+        SELECT *
+        FROM seafood_orders
+        WHERE order_id = ?
+    ");
+    $stmt->execute([$order_id]);
+} else {
+    // Customer can see ONLY their own order
+    $stmt = $pdo->prepare("
+        SELECT *
+        FROM seafood_orders
+        WHERE order_id = ? AND user_code = ?
+    ");
+    $stmt->execute([$order_id, $_SESSION['user_code']]);
+}
+
 $order = $stmt->fetch(PDO::FETCH_ASSOC);
+
 
 if (!$order) {
     $_SESSION['error'] = "Order not found.";

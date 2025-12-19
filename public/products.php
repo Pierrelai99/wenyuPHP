@@ -101,8 +101,8 @@ include '../includes/header.php';
                                     <input type="hidden" name="product_id" value="<?= $product['product_id'] ?>">
                                     <input type="hidden" name="name" value="<?= htmlspecialchars($product['product_name']) ?>">
                                     <input type="hidden" name="price" value="<?= $product['promo_price'] ?: $product['price_per_kg'] ?>">
-                                    <input type="hidden" name="image" value="<?= htmlspecialchars($product['product_image']) ?>">
-
+                                    <input type="hidden" name="image" value="/<?= htmlspecialchars(ltrim($product['product_image'], '/')) ?>">
+                                    <input type="hidden" name="image" value="/<?= htmlspecialchars(ltrim($product['product_image'], '/')) ?>">
                                     <label>Quantity (kg):</label>
                                     <input type="number" name="qty" min="0.5" step="0.5" value="1" required>
 
